@@ -1,20 +1,24 @@
 package com.hermscoder.hashtable;
 
+import java.util.Hashtable;
+
 public class Main {
     public static void main(String[] args) {
-        HashTable myHt = new HashTable();
+        int[] array1 = {1, 3, 5};
+        int[] array2 = {2, 4, 5};
 
-        myHt.set("nails", 100);
-        myHt.set("tile", 50);
-        myHt.set("lumber", 80);
+        System.out.println(itemInCommon(array1, array2));
+    }
 
-        myHt.set("bolts", 200);
-        myHt.set("screws", 140);
-
-        myHt.printTable();
-
-        System.out.println("Keys:");
-        System.out.println(myHt.keys());
+    public static boolean itemInCommon(int[] array1, int[] array2) {
+        Hashtable<Integer, Boolean> hs = new Hashtable();
+        for (int i : array1) {
+            hs.put(i, true);
+        }
+        for (int j : array2) {
+            if(hs.get(j) != null) return true;
+        }
+        return false;
     }
 }
 
