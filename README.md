@@ -2876,3 +2876,59 @@ A very good hash method means:
 And because of that we treat **getting** an item and **setting** an item in a **hash table as _O(1)_**.
 
 ## Interview question
+
+How can we write a code to check if the following two arrays have an item in common?
+
+|  1  |  3  |  5  |
+| --- | --- | --- | 
+|  **3**  |  **4**  |  **5**  |  
+
+The most simple solution is using nested for loops. But that would be the inefficient way. Let's see why:
+
+```java
+public class Main {
+  public static void main(String[] args) {
+    int[] array1 = {1, 3, 5};
+    int[] array2 = {2, 4, 5};
+
+    System.out.println(itemInCommon(array1, array2));
+  }
+
+  public static boolean itemInCommon(int[] array1, int[] array2) {
+    for (int i : array1) {
+      for (int j : array2) {
+        if (i == j) return true;
+      }
+    }
+    return false;
+  }
+}
+```
+
+if we check the _itemInCommon()_ method we see that we had to do **nested loops** for checking the existence of first 
+array items in the second one. So the Big O for this solution is **O(n²)**.
+
+Now let's see how we can do this much more efficiently, with a Hash Table.
+
+```java
+    public static boolean itemInCommon(int[] array1, int[] array2) {
+        Hashtable<Integer, Boolean> hs = new Hashtable();
+        for (int i : array1) {
+            hs.put(i, true);
+        }
+        for (int j : array2) {
+            if(hs.get(j) != null) return true;
+        }
+        return false;
+    }
+```
+
+We can see that now we are:
+- **first populating a Hash Table** with all the items in the first array 
+- in the second for loop we just **call the get for each of its elements** 
+  - if the _get()_ returns is **not null** it means the element is 
+**contained in the Hash Table**, so we **return true**.
+    
+So we have two not nested for loops. This makes it O(2n), and by dropping the constant we end up with **_O(n)_**.
+
+
