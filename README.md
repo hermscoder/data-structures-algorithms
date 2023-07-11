@@ -2931,4 +2931,481 @@ We can see that now we are:
     
 So we have two not nested for loops. This makes it O(2n), and by dropping the constant we end up with **_O(n)_**.
 
+# Graphs
 
+To look at graphs we first we need to understand two concepts:
+
+## Basic concepts
+- a Vertex or a Node.
+
+  _plural: vertices_
+- an Edge or Connection
+
+![img.png](image/edges-nodes.png)
+
+In the image above we can see that the **vertex 3** can have an edge with many vertices. 
+  Meaning that **there is no limit to how many other vertices a vertex can connect to.**
+
+Let's say do you want to go **from 76 to 82**.
+
+You would say that you don't want to go from 76 to 44 to 82 because that would be **two hops**.
+
+![img_1.png](image/graph-long-route.png)
+
+You will probably say that the best way to do it is from 76 to 82, because that
+would need a single hop.
+
+![img.png](image/graph-direct-route.png)
+
+**Most of the time** want to go the **most direct route**.
+
+Why not every single time? 
+Some graphs can have **weighted edges**. 
+
+## Edges
+### Weighted and Non-weighted
+
+The best path would be the one with **less accumulated weight**.
+
+Imagine this same graph but with weights:
+
+![img_2.png](image/graph_weighted_edges.png)
+
+Now the **direct path would cost us 15**. And the longer path would accumulate **only 5**.
+
+To bring this into the real world, let's think about starting point and destination in a Google Maps.
+
+I want to go to the **Barber**. What would be the **quickest way** I can get there?
+
+![img_3.png](image/graph_go_barber.png)
+
+If I go the **direct path to the Barber**, it would **cost me 25 minutes**. Because probably that street is having some bad traffic.
+
+But in the other hand, If I do the path where I **pass by the mall**. It would take me a **total of 5 minutes** to the to my Barber.
+
+So in this case, **the longest path was the fastest one**.
+
+### Directional or bidirectional
+
+Another important concept of graphs is that when we see an edge without any arrows, it means it's a **bidirectional edge**.
+
+A bidirectional example would be in facebook connections.
+
+Your friend is friends with you and you are friends with your friend.
+
+So it's a bidirectional edge. It goes both ways.
+
+![img_4.png](image/graph-facebook-connection.png)
+
+Now on twitter or instagram, when you follow a celebrity:
+
+![img_5.png](image/graph-twitter-directional.png)
+
+You are following the celebrity, but they don't follow you back. **That is directional**.
+
+
+## Trees are graphs
+
+Trees are a form of graph, but they have the **limitation** that **each node can only point to two** other nodes **directionally**.
+
+![img_6.png](image/graph-normal-tree.png)
+
+### Linked Lists are Trees
+Linked Lists are a form of a Tree.
+
+![worst-case-bst.png](image/worst-case-bst.png)
+
+
+So if:
+
+`Linked List = Tree `
+
+`Tree = Graph`
+
+Therefore:
+
+`Linked List = Graph`
+
+**Linked List is a form o a Graph** with the limitation that **each node can only point to one**, directionally.
+
+## Representing a graph 
+
+### Adjacency Matrix
+
+Let's represent this graph in an Adjacency Matrix.
+
+![graph-circular-adjacency-matrix.png](image/graph-circular-adjacency-matrix.png)
+
+let's start from the **A vertex**. It has two edges with **B and E**, so we are
+going to fill those with **1s**.
+
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** |   | `1`  |   |   | `1` |
+| **B** |   |   |   |   |   |
+| **C** |   |   |   |   |   |
+| **D** |   |   |   |   |   |
+| **E** |   |   |   |   |   |
+
+And of course in an adjacency matrix **A can not have a vertex with itself**, so we put a 0 there.
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | `0`  | 1 |   |   | 1 |
+| **B** |   |   |   |   |   |
+| **C** |   |   |   |   |   |
+| **D** |   |   |   |   |   |
+| **E** |   |   |   |   |   |
+
+A **does not have an edge with C and D**, so we fill it with **0s**.
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0  | 1 | `0` | `0` | 1 |
+| **B** |   |   |   |   |   |
+| **C** |   |   |   |   |   |
+| **D** |   |   |   |   |   |
+| **E** |   |   |   |   |   |
+
+That's it for vertex A. 
+
+Now let's do the same for **vertex B**:
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 |
+| **B** | 1 | 0 | 1 | 0 | 0 |
+| **C** |   |   |   |   |   |
+| **D** |   |   |   |   |   |
+| **E** |   |   |   |   |   |
+
+And so on until we complete our matrix.
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 |
+| **B** | 1 | 0 | 1 | 0 | 0 |
+| **C** | 0 | 1 | 0 | 1 | 0 |
+| **D** | 0 | 0 | 1 | 0 | 1 |
+| **E** | 1 | 0 | 0 | 1 | 0 |
+
+So this axis represents the actual vertex.
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| `A` | 0 | 1 | 0 | 0 | 1 |
+| `B` | 1 | 0 | 1 | 0 | 0 |
+| `C` | 0 | 1 | 0 | 1 | 0 |
+| `D` | 0 | 0 | 1 | 0 | 1 |
+| `E` | 1 | 0 | 0 | 1 | 0 |
+
+And this axis is the items it has an edge with.
+
+|       | `A` | `B` | `C` | `D` | `E` |
+| ---   |---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 |
+| **B** | 1 | 0 | 1 | 0 | 0 |
+| **C** | 0 | 1 | 0 | 1 | 0 |
+| **D** | 0 | 0 | 1 | 0 | 1 |
+| **E** | 1 | 0 | 0 | 1 | 0 |
+
+An interesting thing about adjacency matrix, that we said that:
+
+- **A can't point to A**
+- **B can't point to B** ...
+
+We are **always** going to have this **45 degree line of zeros**.
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | `0` | 1 | 0 | 0 | 1 |
+| **B** | 1 | `0` | 1 | 0 | 0 |
+| **C** | 0 | 1 | `0` | 1 | 0 |
+| **D** | 0 | 0 | 1 | `0` | 1 |
+| **E** | 1 | 0 | 0 | 1 | `0` |
+
+And if we have a bidirectional matrix like we have in the example, 
+we will **always have a mirror image** on each of the sides 
+of the line. That looks like that:
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0 | `1` | 0 | 0 | `1` |
+| **B** | `1` | 0 | `1` | 0 | 0 |
+| **C** | 0 | `1` | 0 | `1` | 0 |
+| **D** | 0 | 0 | `1` | 0 | `1` |
+| **E** | `1` | 0 | 0 | `1` | 0 |
+
+But this is only if these are bidirectional.
+
+To exemplify that, let's change the direction of an edge and build the matrix for it:
+Now A points to B but B is not pointing back.
+
+![graph-changing-A-direction.png](image/graph-changing-A-direction.png)
+
+The matrix would look like:
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0 | **1** | 0 | 0 | **1** |
+| **B** | `0` | 0 | **1** | 0 | 0 |
+| **C** | 0 | **1** | 0 | **1** | 0 |
+| **D** | 0 | 0 | **1** | 0 | **1** |
+| **E** | **1** | 0 | 0 | **1** | 0 |
+
+As you can see, on the cell **B -> A** we **have a zero** now. So we have **lost our symmetry** across that 45 degree line.
+
+#### Weighted Edges
+Now let's say that our edges have weights:
+
+![graph-weighted-adjacent-graph.png](image/graph-weighted-adjacent-graph.png)
+
+So if edges are weighted in an adjacency matrix, we will just store these weights in the matrix:
+
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0 | `2` | 0 | 0 | `10` |
+| **B** | `2` | 0 | `4` | 0 | 0 |
+| **C** | 0 | `4` | 0 | `6` | 0 |
+| **D** | 0 | 0 | `6` | 0 | `8` |
+| **E** | `10` | 0 | 0 | `8` | 0 |
+
+### Adjacency List
+
+Adjacency List is just another way of representing a graph.
+
+And we'll do this by **using a HashMap**.
+
+- **Key**: the vertex
+- **Value**: a list with all the edges.
+
+![graph-represent-adjacency-list.png](image/graph-represent-adjacency-list.png)
+
+Would look something like this:
+
+```json
+{
+  "A" = ["B", "E"]
+}
+```
+
+Ps: Notice that we are using letters but the content of the node could be any String, not only a single character.
+
+So the **entire graph** would look like this:
+```json
+{
+  "A" = ["B", "E"],
+  "B" = ["A", "C"],
+  "C" = ["B", "D"],
+  "D" = ["C", "E"],
+  "E" = ["A", "D"]
+}
+```
+
+## Graph: Big O
+
+As we have seen before, there are two ways of representing a graph,
+as an **Adjacency Matrix** and as an **Adjacency List**.
+
+We are going to look at the Big O of both.
+
+### Space Complexity
+
+In an Adjacency List we are going to store that vertex and each one of the edges.
+```json
+{
+  "A" = ["B", "E"],
+  "B" = ["A", "C"],
+  "C" = ["B", "D"],
+  "D" = ["C", "E"],
+  "E" = ["A", "D"]
+}
+```
+
+In an Adjacency Matrix we store those edges, but we also have to store everything that 
+it is **not connected** to, **all of these zeros**:
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | `0` | 1 | `0` | `0` | 1 |
+| **B** | 1 | `0` | 1 | `0` | `0` |
+| **C** | `0` | 1 | `0` | 1 | `0` |
+| **D** | `0` | `0` | 1 | `0` | 1 |
+| **E** | 1 | `0` | `0` | 1 | `0` |
+
+And that is a **big advantage of the adjacency list**.
+
+Space complexity for 
+- **Adjacency Matrix**: 
+    - Number of vertices squared: **O( |V|² )**
+
+- **Adjacency List**: 
+    - Number of vertices plus number of edges: **O( |V| + |E| )**
+  
+From a **Space Complexity perspective**, the **adjacency list is better**.
+
+### Adding an Vertex
+
+Imagine we want to add a new **vertex F** to our graph. Not connected to anything.
+
+![graph-changing-A-direction.png](image/graph-changing-A-direction.png)
+
+#### Adjacency List
+In order to add a new vertex it's just a matter of adding it into the list:
+```json
+{
+  "A" = ["B", "E"],
+  "B" = ["A", "C"],
+  "C" = ["B", "D"],
+  "D" = ["C", "E"],
+  "E" = ["A", "D"],
+  "F" = []
+}
+```
+
+#### Adjacency Matrix
+Now with the matrix we have to add a bidimensional array to the matrix:
+
+|       | A | B | C | D | E | `F`|
+| ---   |---|---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 | `0` |
+| **B** | 1 | 0 | 1 | 0 | 0 | `0` |
+| **C** | 0 | 1 | 0 | 1 | 0 | `0` |
+| **D** | 0 | 0 | 1 | 0 | 1 | `0` |
+| **E** | 1 | 0 | 0 | 1 | 0 | `0` |
+| `F` | `0` | `0` | `0` | `0` | `0` | `0` |
+
+As soon as we make the arrays bigger, you have to create new arrays that are bigger.
+And recreating those arrays if very inefficient.
+
+#### Conclusion
+
+From a Big O perspective:
+- Adjacency Matrix: **O( |V|² )**
+- Adjacency List: **O( 1 )**
+
+So the **adjacency list** is much **more efficient** at **adding items**.
+
+### Adding an Edge
+
+Let's now see how complex it is to **add an edge** **between B and F vertex**.
+
+#### Adjacency List
+In order to add a new edge, we need to add the "F" vertex into the "B" edge list, and vice-versa.
+```json
+{
+  "A" = ["B", "E"],
+  "B" = ["A", "C", "F"],
+  "C" = ["B", "D"],
+  "D" = ["C", "E"],
+  "E" = ["A", "D"],
+  "F" = ["B"]
+}
+```
+
+#### Adjacency Matrix
+For the matrix we just need to change the values **from zero to one** on the **B → F** and **F → B** cells
+
+|       | A | B | C | D | E | F|
+| ---   |---|---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 | 0 |
+| **B** | 1 | 0 | 1 | 0 | 0 | `1` |
+| **C** | 0 | 1 | 0 | 1 | 0 | 0 |
+| **D** | 0 | 0 | 1 | 0 | 1 | 0 |
+| **E** | 1 | 0 | 0 | 1 | 0 | 0 |
+| **F** | 0 | `1` | 0 | 0 | 0 | 0 |
+
+#### Conclusion
+From a Big O perspective, both adjacency matrix and adjacency list are **O( 1 )** to **add an edge**.
+
+
+### Remove an Edge
+How complex it would be to **remove the edge** **between B and F vertex** that we've just added?
+
+#### Adjacency List
+In order to remove the edge between B and F, we need to:
+- Find B in the hash map
+- Then iterate through the edge list and remove F from it
+- And then Find F in the hash map
+- Then iterate through the edge list and remove B from it
+```json
+{
+  "A" = ["B", "E"],
+  "B" = ["A", "C"],
+  "C" = ["B", "D"],
+  "D" = ["C", "E"],
+  "E" = ["A", "D"],
+  "F" = []
+}
+```
+
+#### Adjacency Matrix
+In a matrix we just need to change the values **from one to zero** on the **B → F** and **F → B** cells.
+
+|       | A | B | C | D | E | F|
+| ---   |---|---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 | 0 |
+| **B** | 1 | 0 | 1 | 0 | 0 | `0` |
+| **C** | 0 | 1 | 0 | 1 | 0 | 0 |
+| **D** | 0 | 0 | 1 | 0 | 1 | 0 |
+| **E** | 1 | 0 | 0 | 1 | 0 | 0 |
+| **F** | 0 | `0` | 0 | 0 | 0 | 0 |
+
+#### Conclusion
+From a Big O perspective:
+- Adjacency Matrix: **O( 1 )**
+- Adjacency List: **O( E )** 
+  - We have to go through all the edges, and a particular vertex might have 1000 edges and we would 
+    have to go through the entire array list to remove the edge.  
+
+So this is a situation where the **adjacency matrix outperforms the adjacency list**.
+
+### Remove a Vertex
+
+Let's **remove the vertex F**
+
+#### Adjacency List
+In order to remove the vertex F, we need to:
+- Remove F from the hash map
+- Then **iterate through the entire adjancency list**, checking the 
+  edge lists to see if we need to **remove any edge between the 
+  removed F vertex** and other vertex.
+```json
+{
+  "A" = ["B", "E"],
+  "B" = ["A", "C"],
+  "C" = ["B", "D"],
+  "D" = ["C", "E"],
+  "E" = ["A", "D"],
+  "F" = []
+}
+```
+
+#### Adjacency Matrix
+In a matrix we have to remove the bidirectional array and rewrite the arrays.
+
+|       | A | B | C | D | E |
+| ---   |---|---|---|---|---|
+| **A** | 0 | 1 | 0 | 0 | 1 |
+| **B** | 1 | 0 | 1 | 0 | 0 |
+| **C** | 0 | 1 | 0 | 1 | 0 |
+| **D** | 0 | 0 | 1 | 0 | 1 |
+| **E** | 1 | 0 | 0 | 1 | 0 |
+
+#### Conclusion
+From a Big O perspective:
+- Adjacency Matrix: **O( |V|² )**
+- Adjacency List: **O( |V| + |E| )**
+  - In other words, we have to touch every vertex and every edge
+
+So for removing a vertex the **adjacency list outperforms the adjacency matrix**.
+
+### Which one is better?
+
+We talked about Adjacency Matrix **not being so space efficient**, because there we have to **store all the not connected edges**.
+
+And that becomes **incredibly inefficient when working with large graphs**.
+
+That's why we are going to **work** more with the **Adjacency List representation**. 😃
