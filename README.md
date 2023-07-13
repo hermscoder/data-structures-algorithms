@@ -3588,3 +3588,306 @@ public boolean removeVertex(String vertex) {
     return true;
 }
 ```
+
+# Recursion
+
+## Introduction
+A good definition of recursion would be:
+
+**It's a method that calls itself... until it doesn't.**
+
+We can represent that concept using the **gift box analogy**.
+
+Inside a gift box, could be a **smaller gift box or a ball**:
+
+![rbst-gift-box.png](image/rbst-gift-box.png)
+
+The method `openGiftBox()`, it can return another gift box or a ball.
+
+So let's say that inside the first gift box we **found another gift box**, so we can call the `openGiftBox()` method on the **inner gift box**.
+
+![rbst-gift-box-1.png](image/rbst-gift-box-1.png)
+
+Once again, by calling `openGiftBox()` we can get a smaller gift box or a ball.
+
+![rbst-gift-box-2.png](image/rbst-gift-box-2.png)
+
+The gift box finally have a ball inside it! Obviously we are not going to run `openGiftBox()` on the ball, which brings us back to the definition in the beginning.
+
+**It's a method that calls itself... until it doesn't.**
+
+It doesn't call itself **once we get to the ball**.
+
+How would be a pseudocode for this example we talked about:
+
+```java
+public static Ball openGiftBox() {
+    if(isBall) return ball;
+    openGiftBox();
+}
+```
+
+The situation that causes the method to stop calling itself is named **Base Case**.
+
+The situation where the method is going to call itself again is named **Recursive Case**.
+
+![rbst-recursive-cases.png](image/rbst-recursive-cases.png)
+
+When using **recursion** you **ALWAYS have** to have a **Base Case**.
+
+You can imagine what would happen, right? 
+- We would be opening a gift box
+  - and then again
+    - and then again
+      - and then again
+        - and then again
+          - and then again
+  
+I won't say that would be happening endlessly, because that would be a moment you would get a _StackOverflowError_.
+
+But what if the base case was:
+
+```java
+public static Ball openGiftBox() {
+    if(1 > 2) return ball;
+    openGiftBox();
+}
+```
+
+1 would never be greater than 2, so **that is not a base case**. 
+
+A base case **has to be true at some point**.
+
+Another important aspect of recursive method is that it **has to have a return statement**, because that cause the 
+code to **stop running**.
+
+```java
+public static Ball openGiftBox() {
+    if(isBall) 
+        System.out.println("Hello");
+    openGiftBox();
+}
+```
+
+The output of the example above would be something like:
+```
+  Hello
+  Hello
+  Hello
+  Hello
+  Hello
+  Hello
+  Hello
+  ...
+```
+
+Because as we are no calling `return`, we are calling `openGiftBox()` again and again....
+
+## Call Stack
+
+Just like the STACK data structure we implemented [here](#stacks), the call stack is not different.
+
+Just like the tennis balls example.
+
+|   |
+| --- |
+| ◍ |
+| ◍ |
+| ◍ |
+
+If we have a method that is running, that's the method at the top of the stack. 
+
+When it gets done running, it is only then that the next method can start running again until it finishes.
+
+Let's visualize these methods in the code:
+
+The first `methodOne()`:
+```java
+public static void methodOne() {
+    System.out.println("One");
+}
+```
+Would look like this in the stack:
+
+![rbst-stack-one-method-added.png](image/rbst-stack-one-method.png)
+
+Now let's say that `methodOne()` calls `methodTwo()`:
+```java
+public static void methodThree() {
+    System.out.println("Three");
+}
+public static void methodTwo() {
+    methodThree();
+    System.out.println("Two");
+}
+public static void methodOne() {
+    methodTwo();
+    System.out.println("One");
+}
+```
+Would look like this in the stack:
+
+![rbst-stack-two-methods-added.png](image/rbst-stack-two-methods.png)
+
+
+Now let's say that `methodTwo()` calls `methodThree()`:
+```java
+public static void methodThree() {
+    System.out.println("Three");
+}
+public static void methodTwo() {
+    methodThree();
+    System.out.println("Two");
+}
+public static void methodOne() {
+    methodTwo();
+    System.out.println("One");
+}
+```
+Would look like this in the stack:
+
+![rbst-stack-three-methods.png](image/rbst-stack-three-methods.png)
+
+Since `methodThree()` is at the top of the call stack, it's the only method that can run.
+
+So we'll print out:
+```
+Three
+```
+
+And now that `methodThree()` is done running, we can pop it from the call stack:
+
+![rbst-stack-two-methods.png](image/rbst-stack-two-methods.png)
+
+Since `methodTwo()` is at the top of the call stack, let's run it.
+
+So our output looks currently like:
+```
+Three
+Two
+```
+
+
+And now that `methodTwo()` is done running, we can pop it from the call stack:
+
+![rbst-stack-one-method.png](image/rbst-stack-one-method.png)
+
+Since `methodOne()` is at the top of the call stack, let's run it.
+
+So our output looks currently like:
+```
+Three
+Two
+One
+```
+
+And now that `methodOne()` is done running, we can pop it from the call stack:
+
+![rbst-empty-stack.png](image/rbst-empty-stack.png)
+
+That's it, no more method to execute.
+
+Notice that the order that we called our methods was:
+
+```
+methodOne();
+methodTwo();
+methodThree();
+```
+
+but it printed out:
+```
+Three
+Two
+One
+```
+
+That's because the output is the **order that the methods popped off** from the call stack.
+
+## Factorial
+
+A very common example of recursive problem for teaching recursion.
+
+- **4!** is basically **4 * 3 * 2 * 1**, that is **24**.
+
+- **3!** is basically **3 * 2 * 1**, that is **6**.
+  - so we could say that **4!** is basically **4 * 3!**.
+- **2!** is basically **2 * 1**, that is **2**.
+- **1!** is different, it is just **1**.
+
+It is similar to the gift box analogy. 
+
+We **call the factorial until** we reach our **base case, that is 1!** that gives us **1**.
+
+Some conditions we saw to be able to use recursion:
+1. You have to be doing the **same thing over and over**.
+2. The **problem** needs to be **getting smaller**.
+
+```java
+public static int factorial(int n) {
+    if(n == 1) return 1;
+    return n * factorial(n - 1);
+}
+```
+
+The place where we say `return n * factorial(n - 1);` that is basically the **4 * 3!** situation explained above.
+
+So the calling steps in the code would look like this:
+
+```java
+factorial(4)
+
+return 4 * factorial(3)
+
+return 3 * factorial(2)
+
+return 2 * factorial(1)
+
+return 1
+```
+
+And when returning it would look like this:
+```java
+factorial(4)
+
+return 4 * factorial(3)
+
+return 3 * factorial(2)
+
+return 2 * 1
+```
+```java
+factorial(4)
+
+return 4 * factorial(3)
+
+return 3 * 2
+```
+```java
+factorial(4)
+
+return 4 * 6
+```
+
+```java
+factorial(4) = 24
+```
+
+If we represent this the same way we did with the drawing stack, it would look like this:
+
+![rbst-factorial-stack.png](image/rbst-factorial-stack.png)
+
+So the entire code for the factorial in Java would be:
+
+```java
+public class Factorial {
+    public static void main(String[] args) {
+        System.out.println(factorial(4)); // 24
+    }
+    public static int factorial(int n) {
+        if(n == 1) return 1;
+        return n * factorial(n - 1);
+    }
+}
+
+```
