@@ -3409,3 +3409,182 @@ We talked about Adjacency Matrix **not being so space efficient**, because there
 And that becomes **incredibly inefficient when working with large graphs**.
 
 That's why we are going to **work** more with the **Adjacency List representation**. 😃
+
+## Constructor
+The constructor for Graph class is very simple. It is just going to create an empty hash map
+that will be used to store our adjacency list.
+
+```java
+public class Graph {
+    private HashMap<String, ArrayList<String>> adjList = new HashMap<>();
+}
+```
+
+## Add Vertex
+Basically our method is going to create a stand alone 
+vertex. And later we will implement the adding edges method.
+
+For now our hash map is going to look like this:
+
+```json
+{
+  "A" = []
+}
+```
+
+A important detail is that we  need to check if the vertex being added
+is **already in the graph**, if not we **add and return true**, if it is we **do nothing and return false**.
+
+The code will look like this:
+
+```java
+private boolean addVertex(String vertex) {
+    if (adjList.containsKey(vertex)) {
+        adjList.put(vertex, new ArrayList<>());
+        return true;
+    }
+    return false;
+  }
+```
+
+## Add Edge
+
+This method is going to take two vertices, that would look like this:
+
+```json
+{
+  "A" = [],
+  "B" = []
+}
+```
+
+and then add an edge between them, that would look like this:
+
+```json
+{
+  "A" = ["B"],
+  "B" = ["A"]
+}
+```
+
+That is basically this diagram:
+
+![graph-two-node-graph.png](image/graph-two-node-graph.png)
+
+The steps to adding an edge should be:
+
+- **get _vertex1_ value** in the hashmap (that will be basically it's adjacency list)
+- **get _vertex2_ value** in the hashmap
+- check if both are not null (meaning that vertex exists)
+- add vertex2 to vertex1 adjacency list, and vice-versa.
+
+```java
+public boolean addEdge(String vertex1, String vertex2) {
+
+    ArrayList<String> vertex1EdgeList = adjList.get(vertex1);
+    ArrayList<String> vertex2EdgeList = adjList.get(vertex2);
+
+    if(vertex1EdgeList != null && vertex2EdgeList != null) {
+        vertex1EdgeList.add(vertex2);
+        vertex2EdgeList.add(vertex1);
+        return true;
+    }
+    return false;
+}
+```
+
+## Remove Edge
+
+This method is going to take **two vertices** that are the ones being **connected by the edge to be removed**.
+
+The steps to removing an edge should be:
+
+
+- **get _vertex1_ value** in the hashmap (that will be basically it's adjacency list)
+- **get _vertex2_ value** in the hashmap
+- **check** if both are **not null** (meaning that vertex exists)
+- **remove vertex2 from vertex1 edgeList**
+- **remove vertex1 from vertex2 edgeList**
+
+```java
+public boolean removeEdge(String vertex1, String vertex2) {
+
+    ArrayList<String> vertex1EdgeList = adjList.get(vertex1);
+    ArrayList<String> vertex2EdgeList = adjList.get(vertex2);
+
+    if(vertex1EdgeList != null && vertex2EdgeList != null) {
+        vertex1EdgeList.remove(vertex2);
+        vertex2EdgeList.remove(vertex1);
+        return true;
+    }
+    return false;
+}
+```
+
+## Remove Vertex
+
+Imagine a graph like the following:
+
+![graph-vertex-D-to-be-removed.png](image/graph-vertex-D-to-be-removed.png)
+
+That would be represented by:
+
+```json
+{
+  "A" = ["B", "C", "D"],
+  "B" = ["A", "D"],
+  "C" = ["A", "D"],
+  "D" = ["A", "B", "C"]
+}
+```
+
+Let's say that we want to remove the **"D" vertex**. For that we first grap "D" ajacency list:
+`"D" = ["A", "B", "C"]`
+
+And we can loop throgh those vertices and remove "D" from their adjacency list. So we would endup with:
+
+```json
+{
+  "A" = ["B", "C"],
+  "B" = ["A"],
+  "C" = ["A"],
+  "D" = ["A", "B", "C"]
+}
+```
+
+And then we just remove "D" from the graph:
+
+```json
+{
+  "A" = ["B", "C"],
+  "B" = ["A"],
+  "C" = ["A"],
+}
+```
+
+And our graph would look like this:
+
+![graph-removed-vertex-D.png](image/graph-removed-vertex-D.png)
+
+So the steps to removing an edge should be:
+- **get _vertex1_ value** in the hashmap (that will be basically it's adjacency list)
+- as we are talking about **bidirectional graphs**, we can **go through all the vertices** in the **adjacency list** and
+  **remove _vertex1_ from their** adjacency list
+- and then **remove the vertex** from our graph
+
+The code would look like this:
+
+```java
+public boolean removeVertex(String vertex) {
+    ArrayList<String> vertexAdjList = adjList.get(vertex);
+
+    if(vertexAdjList == null) return false;
+
+    for (String otherVertex : vertexAdjList) {
+        adjList.get(otherVertex).remove(vertex);
+    }
+
+    adjList.remove(vertex);
+    return true;
+}
+```
