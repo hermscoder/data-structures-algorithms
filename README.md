@@ -3891,3 +3891,227 @@ public class Factorial {
 }
 
 ```
+
+# Recursive Binary Search Tree
+
+## What we already have
+For now, we are going to basically copy everything from the Binary Search Tree.
+
+So we would have the RecursiveBinarySearchTree class like this:
+
+```java
+public class RecursiveBinarySearchTree {
+    private Node root;
+
+    public Node getRoot() {
+        return root;
+    }
+
+    public boolean contains(int searchedValue) {
+      if (root == null) return false;
+  
+      Node temp = root;
+      while (temp != null) {
+        if (searchedValue == temp.value) return true;
+        if (searchedValue < temp.value) {
+          temp = temp.left;
+        } else {
+          temp = temp.right;
+        }
+      }
+      return false;
+    }
+  
+    public boolean insert(int value) {
+        Node newNode = new Node(value);
+        if (root == null) {
+            root = newNode;
+            return true;
+        }
+
+        Node temp = root;
+        while (true) {
+            if (newNode.value == temp.value) return false;
+
+            if (newNode.value < temp.value) {
+                if (temp.left == null) {
+                    temp.left = newNode;
+                    return true;
+                }
+                temp = temp.left;
+            } else {
+                if (temp.right == null) {
+                    temp.right = newNode;
+                    return true;
+                }
+                temp = temp.right;
+            }
+        }
+    }
+
+
+    public void printTree() {
+        PrintUtils.printTree(this);
+    }
+
+    public class Node {
+        int value;
+        Node left;
+        Node right;
+
+        Node(int value) {
+            this.value = value;
+        }
+
+    }
+}
+
+```
+## Contains
+If you check the **class above** we can see that when we first implemented the method `contains()` of the **Binary Search Tree** [here](##contains), we did it iteratively,
+ in other words, we used a loop to go through the nodes.
+
+Now we are going to **write this method recursively**.
+
+Let's remember what are the steps for this method, but adjusting them for the recursion:
+
+- currentNode = root
+- if currentNode == null return false **(base case)**
+- if searchedValue == temp return true **(base case)**
+- if searchedValue < temp: **go left**
+    - call `rContains(currentNode.left, searchedValue)`
+  - else if searchedValue > temp: **go right**
+    - call `rContains(currentNode.right, searchedValue)`
+  
+We are going to create a **private recursive method** `rContains()`that will be called from the `contains()`.
+
+You will understand why shortly.
+
+How the method `contains()` is going to look like now:
+
+```java
+public boolean contains(int searchedValue) {
+    return rContains(root, searchedValue);
+}
+```
+
+We needed a new method because the **signature for the recursive** method **required a node to be passed** as a parameter.
+
+And the `rContains()` method will look like:
+
+```java
+private boolean rContains(Node currentNode, int searchedValue) {
+    if(currentNode == null) return false;
+
+    if(currentNode.value == searchedValue) return true;
+
+    if (searchedValue < currentNode.value) {
+        return rContains(currentNode.left, searchedValue);
+    } else {
+        return rContains(currentNode.right, searchedValue);
+    }
+}
+```
+
+Now when we run the following Main class:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        RecursiveBinarySearchTree rbst = new RecursiveBinarySearchTree();
+
+        rbst.insert(47);
+        rbst.insert(21);
+        rbst.insert(76);
+        rbst.insert(18);
+        rbst.insert(27);
+        rbst.insert(52);
+        rbst.insert(82);
+
+        rbst.printTree();
+        System.out.println("Contains 27: "+ rbst.contains(27));
+        System.out.println("Contains 17: "+ rbst.contains(17));
+    }
+}
+```
+We get te following output:
+
+```text
+      47       
+  21       76   
+18   27   52   82 
+Contains 27: true
+Contains 17: false
+```
+
+## Insert
+
+Time to re-write the `insert()` method recursively.
+
+It would be the same logic as it was for the `contains()` method. We would need an `rInsert()` private recursive method.
+
+`insert()` method:
+```java
+public boolean insert(int value) {
+    root = rInsert(root, value);
+    return true;
+}
+
+```
+
+Let's go through the steps for inserting recursively:
+- currentNode = root
+- if currentNode == null return new Node(value) **(base case)**
+- if searchedValue < temp: **we know we are going to insert in the left leg**
+  - currentNode.left = `rInsert(currentNode.left, value)`
+    - if we are not in the moment of adding the new node, the currentNode.left will just point to the same node it was pointing to .
+- else if searchedValue > temp: **we know we are going to insert in the right leg**
+  - currentNode.right = `rInsert(currentNode.right, value)`
+    - if we are not in the moment of adding the new node, the currentNode.right will just point to the same node it was pointing to. 
+
+
+`rInsert()` method will look like:
+
+```java
+private Node rInsert(Node currentNode,int value) {
+    if (currentNode == null) {
+        return new Node(value);
+    }
+    if (value < currentNode.value) {
+        currentNode.left = rInsert(currentNode.left, value);
+    } else {
+        currentNode.right = rInsert(currentNode.right, value);
+    }
+    return currentNode;
+}
+```
+
+Now when we run the following Main class:
+```java
+public class Main {
+    public static void main(String[] args) {
+        RecursiveBinarySearchTree rbst = new RecursiveBinarySearchTree();
+
+        rbst.insert(47);
+        rbst.insert(21);
+        rbst.insert(76);
+        rbst.insert(18);
+        rbst.insert(27);
+        rbst.insert(52);
+        rbst.insert(82);
+
+        rbst.printTree();
+    }
+}
+```
+
+We get te following output:
+```text
+      47       
+  21       76   
+18   27   52   82 
+```
+
+## Delete
+
+### Introduction
