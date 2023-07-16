@@ -4115,3 +4115,56 @@ We get te following output:
 ## Delete
 
 ### Introduction
+Let's say we have the following tree, and we want to **remove the node 27**.
+
+![rbst-remove-27-node.png](image/rbst-remove-27-node.png)
+
+For deleting a node we need to go through some steps:  
+1. First need to **traverse through the tree** in order to **find the node** to be removed.
+
+![rbst-traverse-tree.png](image/rbst-traverse-tree.png)
+
+2. Now that we are in the node, we have to **be able to delete it**.
+  - But what if this node is a **parent node**? **How do we delete it**?
+    - Let's say if there was a left child (subtree):
+      
+      ![rbst-remove-27-node-left-child.png](image/rbst-remove-27-node-left-child.png)
+  
+      For this case we just move the left child(and it's children) up.
+      
+      ![rbst-removed-27-node-left-child.png](image/rbst-removed-27-node-left-child.png)
+
+    - If there was a subtree on the right:
+  
+      ![rbst-remove-27-node-right-child.png](image/rbst-remove-27-node-right-child.png)
+      
+      The logic is the same as the single left subtree. We just **move the right subtree up**.
+  
+      ![rbst-removed-27-node-left-child.png](image/rbst-removed-27-node-left-child.png)
+    
+    - If we have a subtree on each side (two children), it gets a bit more complicated.
+    
+    ![rbst-remove-27-node-two-children.png](image/rbst-remove-27-node-two-children.png)
+
+    We can't just move one of the subtrees up, because we have two.
+
+    We are going to **look at the right subtree**, and find for the **node with the lowest value**.
+
+    ![rbst-remove-27-node-right-subtree-small.png](image/rbst-remove-27-node-right-subtree-small.png)
+
+    That's going to be the **28 node**.
+    
+    And then we are going to **copy that value of 28 into the to-be-removed node**.
+    
+    ![rbst-remove-27-node-right-subtree-switch-values.png](image/rbst-remove-27-node-right-subtree-switch-values.png)
+
+    So we are **NOT moving** the 28 node up. We are just **changing the value of the to-be-removed** node to 28.
+
+    After doing that we are left with two 28 nodes, so now what's left to do is **remove the second 28 node**.
+
+    ![rbst-removed-27-node-valid-bst.png](image/rbst-removed-27-node-valid-bst.png)
+
+    And now this is a valid binary search tree.
+    
+### Implementing
+

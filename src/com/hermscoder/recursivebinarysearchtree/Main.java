@@ -14,5 +14,7 @@ public class Main {
         rbst.insert(82);
 
         rbst.printTree();
+        System.out.println("Contains 27: "+ rbst.contains(27));
+        System.out.println("Contains 17: "+ rbst.contains(17));
     }
 }
