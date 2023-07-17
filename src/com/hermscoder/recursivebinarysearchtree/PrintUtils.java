@@ -2,6 +2,9 @@ package com.hermscoder.recursivebinarysearchtree;
 
 import com.hermscoder.recursivebinarysearchtree.RecursiveBinarySearchTree.Node;
 
+/**
+ * Class taken from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
+ */
 public class PrintUtils {
 
     public static int height(Node root) {
