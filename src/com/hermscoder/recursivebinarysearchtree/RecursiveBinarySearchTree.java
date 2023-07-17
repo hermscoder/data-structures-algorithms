@@ -13,7 +13,7 @@ public class RecursiveBinarySearchTree {
         return true;
     }
 
-    private Node rInsert(Node currentNode,int value) {
+    private Node rInsert(Node currentNode, int value) {
         if (currentNode == null) {
             return new Node(value);
         }
@@ -30,15 +30,50 @@ public class RecursiveBinarySearchTree {
     }
 
     private boolean rContains(Node currentNode, int searchedValue) {
-        if(currentNode == null) return false;
+        if (currentNode == null) return false;
 
-        if(currentNode.value == searchedValue) return true;
+        if (currentNode.value == searchedValue) return true;
 
         if (searchedValue < currentNode.value) {
             return rContains(currentNode.left, searchedValue);
         } else {
             return rContains(currentNode.right, searchedValue);
         }
+    }
+
+    public void deleteNode(int value) {
+        deleteNode(root, value);
+    }
+
+    private Node deleteNode(Node currentNode, int value) {
+        if(currentNode == null) return null;
+
+        if (value < currentNode.value) {
+            currentNode.left = deleteNode(currentNode.left, value);
+        } else if (value > currentNode.value) {
+            currentNode.right = deleteNode(currentNode.right, value);
+        } else {
+            if(currentNode.left == null && currentNode.right == null) {
+                return null;
+            } else if(currentNode.left == null) {
+                    currentNode = currentNode.right;
+            } else if(currentNode.right == null) {
+                currentNode = currentNode.left;
+            } else {
+                int subTreeMin = minValue(currentNode.right);
+                currentNode.value = subTreeMin;
+                currentNode.right = deleteNode(currentNode.right, subTreeMin);
+            }
+        }
+        return currentNode;
+    }
+
+    private int minValue(Node currentNode) {
+        while(currentNode.left != null) {
+            currentNode = currentNode.left;
+        }
+
+        return currentNode.value;
     }
 
     public void printTree() {

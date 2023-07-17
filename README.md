@@ -4168,3 +4168,231 @@ For deleting a node we need to go through some steps:
     
 ### Implementing
 
+Let's first tackle the step 1, that is to **traverse through the tree** in order to **find the node** to be removed.
+
+```java
+public void deleteNode(int value) {
+    deleteNode(root, value);
+}
+
+private Node deleteNode(Node currentNode, int value) {
+    if(currentNode == null) return null;
+
+    if (value < currentNode.value) {
+        currentNode.left = deleteNode(currentNode.left, value);
+    } else if (value > currentNode.value) {
+        currentNode.right = deleteNode(currentNode.right, value);
+    } else {
+        // if node found, do nothing.    
+    }
+    return currentNode;
+}
+```
+
+
+This code until now, **will traverse the tree recursively** and do nothing if the node with the specified value is found.
+
+Now the Step 2, we have to **be able to delete** the node we traversed to.
+
+The node about to be deleted can have tree scenarios:
+
+![rbst-remove-node-child-cases.png](image/rbst-remove-node-child-cases.png)
+
+We are going to implement the **first two** first, as they are simpler:
+
+- leaf node
+- node on the right OR node on the left
+
+#### Leaf node
+
+Here we need to **check if there are no children** and if not then we just **return null**.
+
+As it's a recursive call, the **caller will be assigned** to the return value (**null**), so the value will be **removed from the tree**.
+```java
+private Node deleteNode(Node currentNode, int value) {
+    if(currentNode == null) return null;
+
+    if (value < currentNode.value) {
+        currentNode.left = deleteNode(currentNode.left, value);
+    } else if (value > currentNode.value) {
+        currentNode.right = deleteNode(currentNode.right, value);
+    } else {
+        // Leaf node check
+        if(currentNode.left == null && currentNode.right == null) {
+            return null;
+        }
+    }
+    return currentNode;
+}
+```
+
+#### Single child node
+
+For a single child node, we just need to move up the child. That will be basically return the
+child, as we are in a recursive method, the called will point to the return of the method.
+
+```java
+private Node deleteNode(Node currentNode, int value) {
+    if(currentNode == null) return null;
+
+    if (value < currentNode.value) {
+        currentNode.left = deleteNode(currentNode.left, value);
+    } else if (value > currentNode.value) {
+        currentNode.right = deleteNode(currentNode.right, value);
+    } else {
+        // Leaf node check
+        if(currentNode.left == null && currentNode.right == null) {
+            return null;
+        // If there is a right child, move it up    
+        } else if(currentNode.left == null) {
+                currentNode = currentNode.right;
+        // If there is a left child, move it up
+        } else if(currentNode.right == null) {
+            currentNode = currentNode.left;
+        }
+    }
+    return currentNode;
+}
+```
+
+#### Each side child
+
+As we already saw, for removing a parent that has a child node on each side, we first need
+to **look at the right node subtree**, and find for the **node with the minimum value**.
+
+So let's implement a private method to **check for the minimum value** in a subtree.
+
+```java
+private int minValue(Node currentNode) {
+    while(currentNode.left != null) {
+        currentNode = currentNode.left;
+    }
+
+    return currentNode.value;
+}
+```
+
+So for this tree:
+```java
+      47       
+  21       76   
+18   27   52   82 
+```
+
+if we call **minValue for node 47** and **minValue for node 76**, we should get:
+```text
+minValue for node 47: 18
+minValue for node 76: 52
+```
+
+Now let's write the code to delete the node when it has a child on each side.
+
+- As now we have the `minValue()` method, we just need to call it on the right child to find the minimum
+- Then **change the value of the currentNode to the minimum**
+- and then  we call the `deleteNode()` for the minimum **passing the right child as root** of the subtree, this way we are 
+going to **remove the minimum from the subtree**.
+
+
+```java
+private Node deleteNode(Node currentNode, int value) {
+    if(currentNode == null) return null;
+
+    if (value < currentNode.value) {
+        currentNode.left = deleteNode(currentNode.left, value);
+    } else if (value > currentNode.value) {
+        currentNode.right = deleteNode(currentNode.right, value);
+    } else {
+        // Leaf node check
+        if(currentNode.left == null && currentNode.right == null) {
+            return null;
+        // If there is a right child, move it up    
+        } else if(currentNode.left == null) {
+                currentNode = currentNode.right;
+        // If there is a left child, move it up
+        } else if(currentNode.right == null) {
+            currentNode = currentNode.left;
+        // If there is a node on each side, we switch the to-be-removed node 
+        // with the minimum value and remove the minimum from the subtree
+        } else {
+            int subTreeMin = minValue(currentNode.right);
+            currentNode.value = subTreeMin;
+            currentNode.right = deleteNode(currentNode.right, subTreeMin);
+        }
+    }
+    return currentNode;
+}
+```
+
+Let's build a tree and test this out!
+
+![rbst-removed-27-node-in-big-bst.png](image/rbst-removed-27-node-in-big-bst.png)
+
+This is what the main class will look like, for building this tree:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        RecursiveBinarySearchTree rbst = new RecursiveBinarySearchTree();
+
+        rbst.insert(47);
+        rbst.insert(21);
+        rbst.insert(76);
+        rbst.insert(18);
+        rbst.insert(27);
+        rbst.insert(52);
+        rbst.insert(82);
+        rbst.insert(25);
+        rbst.insert(24);
+        rbst.insert(26);
+        rbst.insert(29);
+        rbst.insert(30);
+        rbst.insert(28);
+
+        rbst.printTree();
+    }
+}
+```
+
+And this is the output of the `printTree()` method we use for visualization:
+```text
+                              47                               
+              21                               76               
+      18               27               52               82       
+                  25       29                                   
+                24   26   28   30                                 
+```
+
+
+Let's say we want to **remove node 27**. 
+
+So by our understanding what needs to happen is **27 will be changed to the minimum** 
+value of the right subtree (that's 28). And then we will **remove 28 from the right subtree**.
+
+This is what our tree will look like after **removing node 27**.
+
+![rbst-removed-27-node-in-big-bst-replaced.png](image/rbst-removed-27-node-in-big-bst-replaced.png)
+
+When running the code we get the following output:
+
+```text
+1   Before removing:
+2                              47                               
+3              21                               76               
+4      18               27               52               82       
+5                  25       29                                   
+6                24   26   28   30                                 
+7   After removing:
+8                              47                               
+9              21                               76               
+10      18               28               52               82       
+11                  25       29                                   
+12                24   26       30                                 
+
+```
+
+As you can see in the line 12, we removed the 28 node and change the value of the node 27 to 28 (line 10).
+
+With this we finish implementing the delete method, finally. 
+
+It **seems more complicated than it actually is**. It's just a matter of breaking it down into smaller steps and implementing 
+each one separately.

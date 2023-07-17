@@ -12,9 +12,17 @@ public class Main {
         rbst.insert(27);
         rbst.insert(52);
         rbst.insert(82);
+        rbst.insert(25);
+        rbst.insert(24);
+        rbst.insert(26);
+        rbst.insert(29);
+        rbst.insert(30);
+        rbst.insert(28);
 
+        System.out.println("Before removing:");
         rbst.printTree();
-        System.out.println("Contains 27: "+ rbst.contains(27));
-        System.out.println("Contains 17: "+ rbst.contains(17));
+        rbst.deleteNode(27);
+        System.out.println("After removing:");
+        rbst.printTree();
     }
 }
