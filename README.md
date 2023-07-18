@@ -4796,3 +4796,26 @@ That outputs:
 ```text
 [1, 2, 3, 4, 5, 6]
 ```
+
+### Big O
+
+Obviously, because it has a loop inside a for loop, it's O(n²).
+
+When there is just one item out of place:
+
+|  1   |  2  |  4 |  `3`  |  5 |  6  |
+| ---   | --- | --- | --- | --- | --- |
+
+the complexity wouldn't be O(n²). Because we would be able to sort it in one pass.
+
+That's something to consider when **deciding which algorithm** to use. 
+
+The insertion sort, is very **efficient when data is almost sorted**.
+
+The algorithms we are going to see next, they are faster, but they are not going to be faster 
+then insertion sort if we have **almost sorted data**. 
+
+They are **not efficient when data is almost sorted**.
+
+## Merge Sort
+
