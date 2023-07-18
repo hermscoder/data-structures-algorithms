@@ -4467,3 +4467,332 @@ You can see the whole flow in the gif bellow.
 ![bubble-sort-gif.gif](image/bubble-sort-gif.gif)
 
 ### Code
+
+BubbleSort class:
+```java
+public class BubbleSort {
+    public static void bubbleSort(int[] array) {
+        for (int i = array.length - 1; i > 0; i--) {
+            for(int j = 0; j < i; j++) {
+                // switching items
+                if(array[j] > array[j + 1]) {
+                    int temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                }
+            }
+        }
+    }
+}
+```
+
+Main class:
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] array = {4, 2, 6, 5, 1, 3};
+        BubbleSort.bubbleSort(array);
+        System.out.println(Arrays.toString(array));
+    }
+}
+```
+
+That when executed outputs:
+```text
+[1, 2, 3, 4, 5, 6]
+```
+
+## Selection Sort
+Imagine we have the following unsorted array:
+
+|  `4`   |  2  |  6 |  5  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+|  0   |  1  |  2 |  3  |  4  |  5  |
+- Start from the first item(4) we first assign zero to a variable called **minIndex** that will keep the **index of the smaller number**.
+
+
+  |  `4`   |  2  |  6 |  5  |  1  |  3  |
+  | ---   | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 0`
+
+- Now we loop through the array until we find a smaller number.
+  
+  |  `4`   |  `2` |  6 |  5  |  1  |  3  |
+  | ---   | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  
+  |  4   | `2` |  `6` |  5  |  1  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  4   | `2` |  6 |  `5`  |  1  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  4   | `2` |  6 |  5  |  `1`  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  4   | 2 |  6 |  5  |  `1`  |  `3`  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 4`
+
+  |  4   | 2 |  6 |  5  |  `1`  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 4`
+
+- Once we finish looping through we know our **minIndex is 4**. 
+So what we do is we **swap the first item and the minIndex item (fifth item)**.
+
+- Now the first item is already ordered, so we can start from the second.
+
+  |  1   | `2` |  6 |  5  |  4  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  1   | `2` |  `6` |  5  |  4  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  1   | `2` |  6 |  `5`  |  4  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  1   | `2` |  6 |  5  |  `4`  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+  |  1   | `2` |  6 |  5  |  4  |  `3`  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 1`
+
+- We finish looping through, and our **minIndex remained 1**. So no items need to be swapped.
+- Now the **first and second items are ordered**, so we can **start from the third**.
+
+  |  1   | 2 |  `6` |  5  |  4  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 2`
+  
+  |  1   | 2 |  `6` |  `5`  |  4  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 2`
+  
+  |  1   | 2 |  6 |  `5`  |  4  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 3`
+  
+  |  1   | 2 |  6 |  `5`  |  `4`  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 3`
+  
+  |  1   | 2 |  6 |  5  |  `4`  |  3  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 4`
+  
+  |  1   | 2 |  6 |  5  |  `4`  |  `3`  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 4`  
+  
+  |  1   | 2 |  6 |  5  |  4  |  `3`  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+  `minIndex = 5`
+
+- We finish looping through, and our **minIndex is 5**.
+  So what we do is we **swap the third item and the minIndex item (sixth item)**.
+
+  |  1   | 2 |  `3` |  5  |  4  |  6  |
+  | ---  | --- | --- | --- | --- | --- |
+  |  0   |  1  |  2 |  3  |  4  |  5  |
+
+- Now the **first, second and third items are ordered**, so we can **start from the fourth**.
+
+- We keep on doing this until we get the array sorted. 
+  
+Here it is a GIF that demonstrate the whole process.
+
+
+![selection-sort-gif.gif](image/selection-sort-gif.gif)
+
+### Code
+
+SelectionSort class:
+```java
+public class SelectionSort {
+    public static void selectionSort(int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if(array[j] < array[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            // if minIndex changed, we need to swap i with minIndex item
+            if(minIndex != i) {
+                int temp = array[minIndex];
+                array[minIndex] = array[i];
+                array[i] = temp;
+            }
+        }
+    }
+}
+```
+
+Main class:
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] array = {4, 2, 6, 5, 1, 3};
+        SelectionSort.selectionSort(array);
+        System.out.println(Arrays.toString(array));
+    }
+}
+```
+
+That outputs:
+```text
+[1, 2, 3, 4, 5, 6]
+```
+
+## Insertion Sort
+
+The insertion sort always start with the second item (index 1).
+And then we compare it with the item before.
+
+If it's less than the item before, we switch them.
+
+
+|  4   |  `2`  |  6 |  5  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`2 < 4 = true`
+
+- If it's less, we switch places
+
+|  `2`   |  4  |  6 |  5  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+- Then we move to the next item (index 2) and compare it. 
+  
+  If it's not smaller, then we **move to the next item (index 3)**.
+
+|  2   |  4  |  `6` |  5  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`6 < 4 = false`
+
+|  2   |  4  |  6 |  `5`  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`5 < 6 = true`
+
+- If it's less, we switch places
+
+|  2   |  4  |  `5` |  6  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+- Then we move to the next item (index 4) and compare it.
+
+|  2   |  4  |  5 |  6  |  `1` |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`1 < 6 = true`
+
+- If it's less, we switch places
+  
+|  2   |  4  |  5 |  `1`  |  6 |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`1 < 5 = true`
+
+|  2   |  4  |  `1` |  5  |  6 |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`1 < 4 = true`
+
+|  2   |  `1`  |  4 |  5  |  6 |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+`1 < 2 = true`
+
+|  `1`   |  2  |  4 |  5  |  6 |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+- Then we move to the next item (index 5) and compare it.
+
+|  1   |  2  |  4 |  5  |  6 |  `3`  |
+| ---   | --- | --- | --- | --- | --- |
+`3 < 6 = true`
+
+|  1   |  2  |  4 |  5  |  `3` |  6  |
+| ---   | --- | --- | --- | --- | --- |
+`3 < 5 = true`
+
+|  1   |  2  |  4 |  3  |  5 |  6  |
+| ---   | --- | --- | --- | --- | --- |
+`3 < 4 = true`
+
+|  1   |  2  |  `3` |  4  |  5 |  6  |
+| ---   | --- | --- | --- | --- | --- |
+`3 < 2 = false`
+
+- And that's it! Now we have a sorted array! 
+
+A little GIF to make it easier to understand the insertion sort:
+
+![insertion-sort-gif.gif](image/insertion-sort-gif.gif)
+
+### Code
+
+InsertionSort class:
+
+```java
+public class InsertionSort {
+    public static void insertionSort(int[] array) {
+        for (int i = 1; i < array.length; i++) {
+            int temp = array[i];
+            int j = i - 1;
+            while(j >= 0 && temp < array[j]) {
+                array[j + 1] = array[j];
+                array[j] = temp;
+                j--;
+            }
+        }
+    }
+}
+```
+
+Main class:
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] array = {4, 2, 6, 5, 1, 3};
+        InsertionSort.insertionSort(array);
+        System.out.println(Arrays.toString(array));
+    }
+}
+```
+
+That outputs:
+```text
+[1, 2, 3, 4, 5, 6]
+```
