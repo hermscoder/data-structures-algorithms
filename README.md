@@ -4396,3 +4396,74 @@ With this we finish implementing the delete method, finally.
 
 It **seems more complicated than it actually is**. It's just a matter of breaking it down into smaller steps and implementing 
 each one separately.
+
+
+# Algorithms
+
+## Bubble Sort
+
+Bubble Sort is one of the most basic sorting algorithm. It works like this:
+
+Imagine we have the following unsorted array:
+
+|  `4`   |  2  |  6 |  5  |  1  |  3  |
+| ---   | --- | --- | --- | --- | --- |
+
+- Start from the first item(4) with the second one(2), if the first is bigger then we switch places.
+  
+  |  2   |  `4`  |  6 |  5  |  1  |  3  |
+  | ---   | --- | --- | --- | --- | --- |
+  
+- Now we compare the second item with the next item (6), and as it is smaller, we move to the third item.
+  
+  |  2   |  4  |  `6` |  5  |  1  |  3  |
+  | ---   | --- | --- | --- | --- | --- |
+  
+- Now we compare the third item with the next item (5), and as it is bigger, we switch positions.
+
+  |  2   |  4  |  5 |  `6`  |  1  |  3  |
+  | ---   | --- | --- | --- | --- | --- |
+
+- Now we compare the fourth item with the next item (1), and as it is bigger, we switch positions.
+
+  |  2   |  4  |  5 |  1  |  `6`  |  3  |
+    | ---   | --- | --- | --- | --- | --- |
+
+- Now we compare the fifth item with the next item (3), and as it is bigger, we switch positions.
+  
+  |  2   |  4  |  5 |  1  |  3  |  `6`  |
+  | ---   | --- | --- | --- | --- | --- |
+
+- And now the `6` is sorted. So it means that whatever is the **biggest number**, we are going to **bubble it up to the top**.
+- So this took us 5 steps to get the `6` all the way to the top, is an array of 6 elements.
+
+- Now we start over. From the first item(2) with the second one(4), and as it is smaller, we move to the second item.
+  
+  |  2   |  `4`  |  5 |  1  |  3  |  6  |
+  | ---   | --- | --- | --- | --- | --- |
+  
+- The second item(4) with the third (5), and as it is smaller, we move to the third item.
+  
+  |  2   |  4  |  `5` |  1  |  3  |  6  |
+  | ---   | --- | --- | --- | --- | --- |
+
+- The third item(5) with the fourth (1), and as it is bigger, we switch positions.
+
+  |  2   |  4  |  1 |  `5`  |  3  |  6  |
+    | ---   | --- | --- | --- | --- | --- |
+
+- And again:
+
+  |  2   |  4  |  1 |  3  |  `5`  |  6  |
+      | ---   | --- | --- | --- | --- | --- |
+
+- Now the second biggest item has been bubbled up to the top.
+And that only took **4 steps**. So each time we go through this we will **take fewer steps**.
+  
+Probably you understood the idea of the algorithm. 
+You can see the whole flow in the gif bellow.
+  
+
+![bubble-sort-gif.gif](image/bubble-sort-gif.gif)
+
+### Code
