@@ -4966,3 +4966,44 @@ When we call:
 
 
 ![merge-sort-with-bkg.png](image/merge-sort-with-bkg.png)
+
+### Big O
+
+**Space Complexity**
+
+We know that the very first step of `mergeSort()` is to create two new arrays from 
+the give array, called left and right.  So we basically doubled the size in memory that we are using.
+
+As the algorithm continues, we create more and more new arrays (until we have single-item arrays). So if we have an array 
+with 8 items.  We are going to have to create 8 new arrays. That is **_O(n)_** **space complexity**.
+
+**Time complexity**
+
+When we have a 8 item array to order. The steps would be:
+
+- Break into 2 arrays of 4 elements
+- Break into 4 arrays of 2 elements
+- Break into 8 arrays of 1 element
+
+So for breaking down the array that is a **O(log n)** operation.
+
+But we have to iterate through the arrays in order to merge them together.
+
+- Combine 2 arrays into 1 arrays of 8
+- Combine 4 arrays into 2 arrays of 4
+- Combine 8 arrays into 2 arrays of 2
+
+So for merging the arrays is a **O(n)** operation.
+
+So if we put it together we get **_O(n log n)_** complexity for Merge Sort.
+
+If we check in the **Big O Complexity Chart**:
+
+![Big O complexity comparison](https://cdn.hackr.io/uploads/posts/attachments/1650357901lkH1xKTytK.webp)
+_from https://www.bigocheatsheet.com/_
+
+We can see that O(n log n) is not great. But when we talk about sorting algorithms, **_O(n²)_ and _O(n log n)_ are the 
+only two options** when talking about algorithms that can order not only numbers.
+
+_O(n²)_ and _O(n log n)_ may seem close together but when the number of items go to 1000 or 1.000.000, the difference 
+gets huge between O(n²) algorithms (Bubble Sort, Insertion Sort, etc..) and O(n log n) algorithms (Merge Sort). 
