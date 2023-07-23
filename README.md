@@ -4965,3 +4965,4 @@ When we call:
 `mergeSort([3, 1, 4, 2])`
 
 
+![merge-sort-with-bkg.png](image/merge-sort-with-bkg.png)
