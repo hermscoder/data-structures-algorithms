@@ -5006,4 +5006,244 @@ We can see that O(n log n) is not great. But when we talk about sorting algorith
 only two options** when talking about algorithms that can order not only numbers.
 
 _O(n²)_ and _O(n log n)_ may seem close together but when the number of items go to 1000 or 1.000.000, the difference 
-gets huge between O(n²) algorithms (Bubble Sort, Insertion Sort, etc..) and O(n log n) algorithms (Merge Sort). 
+gets huge between O(n²) algorithms (Bubble Sort, Insertion Sort, etc..) and O(n log n) algorithms (Merge Sort).
+
+## Quick Sort
+
+The way quick sort works, is that we are going to have a pivot point, and we are going to compare every item in the array 
+with it.
+
+If we find an item that is smaller than the pivot, we are going to exchange places with the first item that is greater 
+than this value.
+
+For example, the following array:
+
+| pivot   |  |   |    |   |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  6  |  1 |  7  |  3 |  2  |  5  |
+
+find an item that is smaller than pivot:
+
+| pivot   | greater |   |    |   |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  6  |  1 |  7  |  3 |  2  |  5  |
+
+| pivot   | greater | smaller  |    |   |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  6  |  `1` |  7  |  3 |  2  |  5  |
+
+we are going to exchange places with the first item that is greater than the pivot:
+
+| pivot   | greater | smaller  |    |   |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  `6`  |  `1` |  7  |  3 |  2  |  5
+
+| pivot   | smaller | greater  |    |   |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  **1**  |  **6** |  7  |  3 |  2  |  5  |
+
+then we move to the next item that is smaller than pivot:
+
+| pivot   | smaller | greater  | greater |   |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  6 |  7  |  3 |  2  |  5  |
+
+| pivot   | smaller | greater  | greater | smaller |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  6 |  7  |  `3` |  2  |  5  |
+
+now we exchange places with the first item that is greater:
+
+| pivot   | smaller | greater  | greater | smaller |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  `6` |  7  |  `3` |  2  |  5  |
+
+| pivot   | smaller | smaller  | greater | greater |    |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  **3** |  7  |  **6** |  2  |  5  |
+
+then we move to the next item that is smaller than pivot:
+
+| pivot   | smaller | smaller  | greater | greater | smaller |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  3 |  7  |  6 |  `2`  |  5  |
+
+now we exchange places with the first item that is greater:
+
+| pivot   | smaller | smaller  | greater | greater | smaller |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  3 |  `7`  |  6 |  `2`  |  5  |
+
+| pivot   | smaller | smaller  | smaller | greater | greater |    |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  3 |  **2**  |  6 |  **7**  |  5  |
+
+then we move to the next item that is smaller than pivot:
+
+| pivot   | smaller | smaller  | smaller | greater | greater | greater |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  **4**   |  1  |  3 |  2  |  6 |  7  |  5  |
+
+So as we reach the end of the array, the last step is **swap the pivot with the last item that is smaller than pivot**:
+
+| pivot   | smaller | smaller  | smaller | greater | greater | greater |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  `4`   |  1  |  3 |  `2`  |  6 |  7  |  5  |
+
+| smaller   | smaller | smaller  | pivot | greater | greater | greater |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  2   |  1  |  3 |  4  |  6 |  7  |  5  |
+
+And now the **4 is sorted**. So that will be his place when we are done ordering.
+
+You can see that everything in the left is smaller than 4 and everything in the right is greater than 4.
+
+So now we are going to **run quick sort on the left and on the right subarrays**.
+
+Starting from the left:
+
+| pivot |  |  |
+| ---     | ---     | ---     |
+|  **2**      |  1      |  3      |
+
+As we see, there is nothing to be done. As the next number is smaller, there is no need to do the swaping.
+
+| pivot | smaller | greater |
+| ---   | ---     | ---     |
+|  **2**|  1      |  3      |
+
+Now we just do the last step that is **swap the pivot with the last smaller**:
+
+
+| pivot | smaller | greater |
+| ---   | ---     | ---     |
+|  `2`|  `1`      |  3      |
+
+| smaller| pivot | greater |
+| ---   | ---     | ---     |
+|  1    |  **2**      |  3      |
+
+And now the **number 2 is sorted**.
+
+We are going to run `quickSort()` in each side again, but as **there is only one item** 
+on each side, we know that **those are ordered already**.
+
+So our array looks likek this:
+
+| sorted   | sorted | sorted  | sorted | greater | greater | greater |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  1   |  2  |  3 |  4  |  6 |  7  |  5  |
+
+Now let's work on the right side (the numbers greater than 4):
+
+| pivot |  |  |
+| --- | --- | --- |
+|  **6** |  7  |  5  |
+
+found the smaller:
+
+| pivot | greater | smaller |
+| --- | --- | --- |
+|  **6** |  7  |  `5`  |
+
+exchange with the first greater:
+
+| pivot | greater | smaller |
+| --- | --- | --- |
+|  **6** |  `7`  |  `5`  |
+
+| pivot | smaller | greater |
+| --- | --- | --- |
+|  **6** |  5  |  7  |
+
+Now we just do the last step that is **swap the pivot with the last smaller**:
+
+| pivot | smaller | greater |
+| --- | --- | --- |
+|  `6` |  `5`  |  7  |
+
+| smaller | pivot | greater |
+| --- | --- | --- |
+|  5 |  6  |  7  |
+
+
+We are going to run `quickSort()` in each side again, but as **there is only one item**
+on each side, we know that **those are ordered already**.
+
+And now we have our **array sorted**:
+
+|    |  |   |  |  |  |  |
+| ---   | --- | --- | --- | --- | --- | --- |
+|  1   |  2  |  3 |  4  |  5 |  6  |  7  |
+
+A short GIF to make it easier to understand what we just did:
+
+![quick-sort-gif.gif](image/quick-sort-gif.gif)
+
+### Pivot Intro
+
+We are going to need a helper function for `quickSort()`.
+
+A function that would do all **comparisons between pivot item and remain numbers**,
+and do the **sorting** where in the **left** there are **smaller than pivot** and on the **right** 
+**greater than pivot**. 
+
+What the `pivot()` method will do is:
+
+- Have a variable `pivot` that points to the first item, and we are going to **loop through the array from the next item**.
+
+![quick-sort-pivot-i.png](image/quick-sort-pivot-i.png)
+
+- We are going to have a variable called `swap` that starts pointing to pivot, but this one will move.
+
+![quick-sort-pivot-swap.png](image/quick-sort-pivot-swap.png)
+
+- Then we start by checking `pivot < array[i]`, 
+    - if not (**6 is not smaller than pivot**) we continue moving:
+  
+    ![quick-sort-pivot-1.png](image/quick-sort-pivot-1.png)
+
+    - If array[i] is smaller than pivot (4 is smaller than 1) we will **move the swap to next item in the array**
+
+    ![quick-sort-pivot-2.png](image/quick-sort-pivot-2.png)
+  
+    - And we are going to use `swap` variable to **exchange smaller and swap**:
+  
+    ![quick-sort-pivot-3.png](image/quick-sort-pivot-3.png)
+
+- We keep checking for greater numbers:
+
+  ![quick-sort-pivot-4.png](image/quick-sort-pivot-4.png)
+
+- We find 3 < 4:
+  
+  ![quick-sort-pivot-5.png](image/quick-sort-pivot-5.png)
+  - So we move swap to next element:
+  
+    ![quick-sort-pivot-6.png](image/quick-sort-pivot-6.png)
+    
+  - And we use `swap` to exchange smaller and swap:
+    
+    ![quick-sort-pivot-7.png](image/quick-sort-pivot-7.png)
+
+- Then we find 2 < 4:
+  
+  ![quick-sort-pivot-8.png](image/quick-sort-pivot-8.png)
+  
+  ![quick-sort-pivot-9.png](image/quick-sort-pivot-9.png)
+
+  ![quick-sort-pivot-10.png](image/quick-sort-pivot-10.png)
+
+- Then we move to the last item, that will be greater than the pivot.
+
+![quick-sort-pivot-11.png](image/quick-sort-pivot-11.png)
+
+- Now that we are done with our loop, we swap the `pivot` with the `swap` variable.
+
+![quick-sort-pivot-12.png](image/quick-sort-pivot-12.png)
+  
+- And then we just need to return the `swap` variable.
+
+We need to return the swap variable because it is the middle of the array. 
+This way we can run the quicksort on the left and right-side array.
+
