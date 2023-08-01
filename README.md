@@ -5180,7 +5180,9 @@ A short GIF to make it easier to understand what we just did:
 
 ![quick-sort-gif.gif](image/quick-sort-gif.gif)
 
-### Pivot Intro
+### Pivot 
+
+#### Introduction
 
 We are going to need a helper function for `quickSort()`.
 
@@ -5207,7 +5209,7 @@ What the `pivot()` method will do is:
 
     ![quick-sort-pivot-2.png](image/quick-sort-pivot-2.png)
   
-    - And we are going to use `swap` variable to **exchange smaller and swap**:
+    - And we are going to use `swap` variable to **exchange array[i] and swap**:
   
     ![quick-sort-pivot-3.png](image/quick-sort-pivot-3.png)
 
@@ -5244,6 +5246,197 @@ What the `pivot()` method will do is:
   
 - And then we just need to return the `swap` variable.
 
-We need to return the swap variable because it is the middle of the array. 
-This way we can run the quicksort on the left and right-side array.
+We need to **return the `swap` variable** because it is the **middle of the array**.
+
+
+This way we can **run the quicksort on the left and right-side** arrays.
+
+#### Code
+
+As we are going to swap elements frequently in many situations, it's better if we create a helper method.
+
+That basically swap items of the given indexes.
+
+```java
+private static void swap(int[] array, int firstIndex, int secondIndex) {
+    int temp = array[firstIndex];
+    array[firstIndex] = array[secondIndex];
+    array[secondIndex] = temp;
+}
+```
+
+Now we can move to the `pivot()` method:
+
+```java
+public static int pivot(int[] array, int pivotIndex, int endIndex) {
+    int swapIndex = pivotIndex;
+    for(int i = pivotIndex + 1; i <= endIndex; i++) {
+        if(array[i] < array[pivotIndex]) {
+            swapIndex++;
+            swap(array, swapIndex, i);
+        }
+    }
+    swap(array, pivotIndex, swapIndex);
+    return swapIndex;
+}
+```
+
+Very straight forward. If we test this out with the array:
+`[4, 6, 1, 7, 3, 2, 5]`
+
+Our main method would look like this:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] array = {4, 6, 1, 7, 3, 2, 5};
+        int pivot = QuickSort.pivot(array, 0 , 6);
+        System.out.println("Returned Index:" + pivot);
+        System.out.println(Arrays.toString(array));
+    }
+}
+```
+
+And the output would be:
+```text
+Returned Index:3
+[2, 1, 3, 4, 6, 7, 5]
+```
+
+So we returned an index and we also modified the array. If you check the array, all the elements on the left are smaller than 4 
+and on the right are greater than 4.
+
+### Sorting
+
+On the quickSort() method we are going to run the pivot() method.
+As we previously saw, after running pivot in the array `[4, 6, 1, 7, 3, 2, 5]` this is wat we end up with:
+
+![quick-sort-method-1.png](image/quick-sort-method-1.png)
+
+The next step now is to run quick sort on the left and right subarrays.
+
+![quick-sort-method-3.png](image/quick-sort-method-3.png)
+
+Following the same logic of the parent array, this is what calling `quickSort()` on the left side would look like:
+
+![quick-sort-method-4.png](image/quick-sort-method-4.png)
+
+We see that `array[i]` is smaller then `pivot`. So we move swap to the next element on the array:
+
+![quick-sort-method-5.png](image/quick-sort-method-5.png)
+
+And then we swap the `array[i]` with `swap` that in this case means doing nothing. 
+
+So we keep checking for the next smaller number.
+
+![quick-sort-method-6.png](image/quick-sort-method-6.png)
+
+Now that we are done checking the array, we swap the `pivot` with the `swap` variable.
+
+![quick-sort-method-7.png](image/quick-sort-method-7.png)
+
+Now we have the pivot being the middle index of the subarray. Now we call `quickSort()` on the **left and on the right side**.
+
+![quick-sort-method-8.png](image/quick-sort-method-8.png)
+
+As we can see, in both calls, `quickSort(array, 0, 0)` and `quickSort(array, 2, 2)` we have the **left index equals to the right index**.
+
+It make sense to sort only when **left is smaller than right**.  
+
+When that's not the case we should **return the array as is**. Because a **single element subarray is always sorted**.
+
+So **left < right** will be our **Base Case**.
+
+After returning the array when calling `quickSort()` on the base case, we can now do the same in the right parent subarray.
+
+Following the same logic of the parent array, this is what calling `quickSort()` on the right side would look like:
+
+![quick-sort-method-9.png](image/quick-sort-method-9.png)
+
+
+We see that `array[i]` is greater then `pivot`. So we **move to next item**.
+
+![quick-sort-method-10.png](image/quick-sort-method-10.png)
+
+As 5 is smaller than the pivot (6), we then move swap to the next item.
+
+![quick-sort-method-11.png](image/quick-sort-method-11.png)
+
+And then we swap `array[i]` and `swap`:
+
+![quick-sort-method-12.png](image/quick-sort-method-12.png)
+
+Now that we are done checking the whole array, we swap `pivot` and `swap` variables.
+
+![quick-sort-method-13.png](image/quick-sort-method-13.png)
+
+As we already saw on the left side, when calling `quickSort()` on a single element, it will return the array as is. 
+It's our base case.
+
+So after both `quickSort()` calls on the parent left and right subarrays, we can return the array sorted.
+
+
+![quick-sort-method-14.png](image/quick-sort-method-14.png)
+
+#### Code
+
+```java
+// Overload so we don't need to provide left and right parameters 
+// whenever we call quickSort()
+public static int[] quickSort(int[] array) {
+    return quickSort(array, 0, array.length - 1);
+}
+
+private static int[] quickSort(int[] array, int left, int right) {
+    // base case
+    if (left < right) {
+        int pivotIndex = pivot(array, left, right);
+
+        // running quickSort() on the left side of pivot 
+        quickSort(array, left, pivotIndex - 1);
+        // running quickSort() on the right side of pivot
+        quickSort(array, pivotIndex + 1, right);
+    }
+
+    return array;
+}
+```
+
+### Big O
+
+When running `pivot()` method, no new items are created. We just moved items in the same array.
+
+By working on the original array, from a **space complexity the Quick Sort is O(1)**, and that's an **advantage of Quick Sort over Merge Sort**. 
+
+From a Time Complexity perspective, the `quickSort()` method required to go through all the items, that's **_O(n)_**.
+
+But we went through the array:
+- first for the entire array
+- second for the left and right subarrays
+- third for the single item arrays
+
+That is going to be _**O(log n)**_.
+
+So the `quickSort()` method is **_O(n log n)_**.
+
+That would be for **the best case**.
+
+The worse case is if we have an already sorted array.
+
+And that's because the catch of the quickSort is the fact that we can **run quickSort on the left and right** of a pivot.
+
+If the array comes already ordered, it means that there will be no left elements, as the ones in the left are smaller than the pivot.
+
+Like in this example:
+
+![quick-sort-worst-case.png](image/quick-sort-worst-case.png)
+
+So the worse case is going to be **_O(n²)_**.
+
+And our average case will be _**O(log n)**_.
+
+So if you have a data that is sorted (or almost) it is better to use another algorithm, like insertion sort, for example.
+
+
+
 
