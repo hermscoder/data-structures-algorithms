@@ -5425,7 +5425,7 @@ The worse case is if we have an already sorted array.
 
 And that's because the catch of the quickSort is the fact that we can **run quickSort on the left and right** of a pivot.
 
-If the array comes already ordered, it means that there will be no left elements, as the ones in the left are smaller than the pivot.
+If the array comes already ordered, it means that **there will be no left elements**, as the ones in the left are smaller than the pivot.
 
 Like in this example:
 
