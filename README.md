@@ -5819,3 +5819,87 @@ That's the output:
 And that's the PostOrder of our tree.
 
 ### InOrder
+
+We start by visiting our root node, and then we will go to the left until there is no left (note 18), and then we write its value.
+
+![dsf-postorder-1.gif](image/dsf-postorder-1.gif)
+
+The tree looks exactly the same, but the difference is that on InOder, the node 18 is being **written after checking** only if there is **nothing on the left**. 
+
+It's different because on the _PostOrder_, we _first check left and right, before writing_. 
+
+After writing left child, we go **back to the parent** (node 21) and **write its value**, and then we go to the **right child and writes its value**.
+
+![dsf-inorder-1.gif](image/dsf-inorder-1.gif)
+
+Now you already probably figured that we are going back to the root (node 47) and writing it.
+
+![dsf-inorder-2.png](image/dsf-inorder-2.png)
+
+Now we visit the right child (node 76) and check left until we can't anymore, then we write the leaf node 52.
+
+![dsf-inorder-4.gif](image/dsf-inorder-4.gif)
+
+Then **back to the parent** (node 76) and **write its value**, and then we go to the **right child and writes its value** as well.
+
+![dsf-inorder-5.gif](image/dsf-inorder-5.gif)
+
+If you notice the sequence that we are writing the nodes into the list:
+`18, 21, 27, 47, 52, 76, 82` we are doing it in numeric order.
+
+#### Code
+
+It's very similar to the preOrder and postOrder methods.
+
+Using recursion:
+
+```java
+public ArrayList<Integer> dfsInOrderRecursive() {
+    return rDfsInOrder(new ArrayList<>(), root);
+}
+
+private ArrayList<Integer> rDfsInOrder(ArrayList<Integer> results, Node currentNode) {
+    if(currentNode.left != null) {
+        rDfsInOrder(results, currentNode.left);
+    }
+    results.add(currentNode.value);
+    if(currentNode.right != null) {
+        rDfsInOrder(results, currentNode.right);
+    }
+    return results;
+}
+```
+
+Using an inner class object instantiation:
+
+```java
+public ArrayList<Integer> dfsInOrderObjectInstantiation() {
+    var results = new ArrayList<Integer>();
+
+    class Traversal {
+        Traversal(Node currentNode) {
+            if(currentNode.left != null) {
+                new Traversal(currentNode.left);
+            }
+            results.add(currentNode.value);
+            if(currentNode.right != null) {
+                new Traversal(currentNode.right);
+            }
+        }
+    }
+    new Traversal(root);
+    return results;
+}
+```
+
+### Conclusion
+You probably noticed that the **Depth First Search** methods are **very similar** to each other.
+
+In preOrder traversal, the nodes are visited in the order root, left child, and right child.
+In postOrder traversal, the nodes are visited in the order left child, right child, root. 
+In inOrder traversal, the nodes are visited in the order left child, root, right child.
+
+In the code this basically translates to which moment we are writing or visiting a specific node.
+- preOrder writes before visiting left and right nodes.
+- postOrder writes after visiting left and right nodes.
+- inOrder writes after visiting left node and before visiting the right node.

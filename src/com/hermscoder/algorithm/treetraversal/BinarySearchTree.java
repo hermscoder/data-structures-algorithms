@@ -87,6 +87,38 @@ public class BinarySearchTree {
         return results;
     }
 
+    public ArrayList<Integer> dfsInOrderRecursive() {
+        return rDfsInOrder(new ArrayList<>(), root);
+    }
+
+    private ArrayList<Integer> rDfsInOrder(ArrayList<Integer> results, Node currentNode) {
+        if(currentNode.left != null) {
+            rDfsInOrder(results, currentNode.left);
+        }
+        results.add(currentNode.value);
+        if(currentNode.right != null) {
+            rDfsInOrder(results, currentNode.right);
+        }
+        return results;
+    }
+
+    public ArrayList<Integer> dfsInOrderObjectInstantiation() {
+        var results = new ArrayList<Integer>();
+
+        class Traversal {
+            Traversal(Node currentNode) {
+                if(currentNode.left != null) {
+                    new Traversal(currentNode.left);
+                }
+                results.add(currentNode.value);
+                if(currentNode.right != null) {
+                    new Traversal(currentNode.right);
+                }
+            }
+        }
+        new Traversal(root);
+        return results;
+    }
     public ArrayList<Integer> dfsPostOrderRecursive() {
         return rDfsPostOrder(new ArrayList<>(), root);
     }

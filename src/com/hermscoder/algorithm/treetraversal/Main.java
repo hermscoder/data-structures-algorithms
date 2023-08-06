@@ -11,8 +11,8 @@ public class Main {
         bst.insert(52);
         bst.insert(82);
 
-        System.out.println(bst.dfsPostOrderRecursive());
-        System.out.println(bst.dfsPostOrderObjectInstantiation());
+        System.out.println(bst.dfsInOrderRecursive());
+        System.out.println(bst.dfsInOrderObjectInstantiation());
 
     }
 }
