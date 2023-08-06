@@ -5437,6 +5437,93 @@ And our average case will be _**O(log n)**_.
 
 So if you have a data that is sorted (or almost) it is better to use another algorithm, like insertion sort, for example.
 
+# Tree Traversal
+
+We are going to **visit every node in the tree**, and put the **values in an array list** and return it.
+
+There are some options for achieving this.
+
+We could **start at the top**, and **go through the second row**, and then the next, until we reach the end.
+
+![breadth-first-search.gif](image/breadth-first-search.gif)
+
+That's called **Breadth First Search**.
+
+Or we can **start from the leaf** element and then move to parent and its **other child**, and to it's parent.
+
+![depth-first-search.gif](image/depth-first-search.gif)
+
+That's called **Depth First Search**.
+
+## Breadth First Search
+
+This is the one where we **start at the top**, and then we **move to the next row**, and we do it **row by row** and 
+**add this numbers to an array** list and return it.
+
+So we are going to need:
+
+- A `queue`: that will keep all the nodes that we go through.
+- A `results` array: that will have the value of the items that are dequeued from the queue.
+
+We **start from the top**, adding the node to the `queue`:
+
+![img.png](image/tree-traversal-0.png)
+
+And then we will **dequeue it** and **store the value** in `results`.
+
+![img_1.png](image/tree-traversal-1.png)
+
+And then **from there we go left**, to the **node 21**, and add it to the queue.
+
+![img_2.png](image/tree-traversal-2.png)
+
+And **we go right** as well, to the **node 76**, and add it to the queue.
+
+![img_3.png](image/tree-traversal-3.png)
+
+Now that we **enqueued the entire row**, we **dequeue** one node and **add the value** into `results` array.
+
+![img_4.png](image/tree-traversal-4.png)
+
+And then we **go to the left and to the right of the dequeued node**, adding those into our `queue`.
+
+![img_5.png](image/tree-traversal-5.png)
+
+Now that we went left and right, we will **dequeue the next item**. The **node 76**.
+
+![img_6.png](image/tree-traversal-6.png)
+
+And then we **go to the left and to the right of the dequeued node** (node 76), adding those into our `queue`.
+
+![img_7.png](image/tree-traversal-7.png)
+
+Now that we went left and right, we will **dequeue the next item**. The **node 18**.
+
+![img_8.png](image/tree-traversal-8.png)
+
+And then we **go to the left and to the right of the dequeued node** (node 18), but **we won't have any children**.
+
+So we will just dequeue the next item (node 27), and we will notice that it has no children as well, and the same will 
+be true for all the remaining nodes.
+
+![img_9.png](image/tree-traversal-9.png)
+
+And we will and up with the `result` array like: 
+
+```text
+[47, 21, 76, 18, 27, 52, 82]
+```
+
+We notice the pattern if we read the array as follows:
+```text
+        47 
+    21      76
+  18  27  52  82
+```
+
+This exactly **matches our tree**. 
+
+### Code
 
 
 
