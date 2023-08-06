@@ -5525,5 +5525,64 @@ This exactly **matches our tree**.
 
 ### Code
 
+Let's implement the Breadth First Search method on a copy of the `BinarySearchTree` class that we created before, but using the 
+Data Structures provided by Java.
 
+We won't be using the _Queue class_ that we created before. Let's be more familiarized with the Data Structures
+provided by Java.
+
+```java
+public ArrayList<Integer> BFS() {
+
+    Queue<Node> queue = new LinkedList<>();
+    ArrayList<Integer> results = new ArrayList<>();
+    
+    // start from the top adding root to the queue
+    queue.add(root);
+    
+    Node dequeuedNode;
+    while (queue.size() > 0) {
+        dequeuedNode = queue.remove();
+        // add the dequeued value to the results array
+        results.add(dequeuedNode.value);
+        // check for left child and add it to the queue
+        if (dequeuedNode.left != null) {
+            queue.add(dequeuedNode.left);
+        }
+        // check for right child and add it to the queue
+        if (dequeuedNode.right != null) {
+            queue.add(dequeuedNode.right);
+        }
+    }
+
+    return results;
+}
+```
+
+Our Main Class:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+        bst.insert(47);
+        bst.insert(21);
+        bst.insert(76);
+        bst.insert(18);
+        bst.insert(27);
+        bst.insert(52);
+        bst.insert(82);
+
+        System.out.println(bst.BFS());
+    }
+}
+```
+
+Remember that this method is being implemented in a copy of the BinarySearchTree class that we've implemented before..
+
+The output of the class:
+
+```text
+[47, 21, 76, 18, 27, 52, 82]
+```
 
