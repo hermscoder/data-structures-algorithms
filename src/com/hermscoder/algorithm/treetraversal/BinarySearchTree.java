@@ -2,7 +2,9 @@ package com.hermscoder.algorithm.treetraversal;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 public class BinarySearchTree {
     private Node root;
@@ -69,7 +71,7 @@ public class BinarySearchTree {
         Queue<Node> queue = new LinkedList<>();
         ArrayList<Integer> results = new ArrayList<>();
         queue.add(root);
-        
+
         Node dequeuedNode;
         while (queue.size() > 0) {
             dequeuedNode = queue.remove();
@@ -83,5 +85,99 @@ public class BinarySearchTree {
         }
 
         return results;
+    }
+
+    public ArrayList<Integer> dfsPostOrderRecursive() {
+        return rDfsPostOrder(new ArrayList<>(), root);
+    }
+
+    private ArrayList<Integer> rDfsPostOrder(ArrayList<Integer> results, Node currentNode) {
+        if(currentNode.left != null) {
+            rDfsPostOrder(results, currentNode.left);
+        }
+        if(currentNode.right != null) {
+            rDfsPostOrder(results, currentNode.right);
+        }
+
+        results.add(currentNode.value);
+        return results;
+    }
+
+    public ArrayList<Integer> dfsPostOrderObjectInstantiation() {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        class Traversal {
+            Traversal(Node currentNode) {
+                if(currentNode.left != null) {
+                    new Traversal(currentNode.left);
+                }
+                if(currentNode.right != null) {
+                    new Traversal(currentNode.right);
+                }
+                results.add(currentNode.value);
+            }
+        }
+        new Traversal(root);
+        return results;
+    }
+
+    public ArrayList<Integer> dfsPreOrderObjectInstantiation() {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        class Traverse {
+            Traverse(Node currentNode) {
+                results.add(currentNode.value);
+                if (currentNode.left != null) {
+                    new Traverse(currentNode.left);
+                }
+                if (currentNode.right != null) {
+                    new Traverse(currentNode.right);
+                }
+            }
+        }
+        new Traverse(root);
+        return results;
+    }
+
+    public ArrayList<Integer> dfsPreOrderRecursive() {
+        return rDFSPreOrder(new ArrayList<>(), root);
+    }
+
+    private ArrayList<Integer> rDFSPreOrder(ArrayList<Integer> array, Node currentNode) {
+        array.add(currentNode.value);
+
+        if (currentNode.left != null) {
+            rDFSPreOrder(array, currentNode.left);
+        }
+        if (currentNode.right != null) {
+            rDFSPreOrder(array, currentNode.right);
+        }
+        return array;
+    }
+
+    public List<Integer> dfsPreOrderNonRecursive(Node root) {
+        //initialize array list
+        List<Integer> preOrder = new ArrayList<>();
+
+        //if tree is empty then we return empty list
+        if (root == null) return preOrder;
+
+        //initialize stack
+        Stack<Node> st = new Stack<Node>();
+
+        //push root element to stack
+        st.push(root);
+
+        //loop runs till stack in not empty
+        while (!st.isEmpty()) {
+            //pop the top element in stack
+            root = st.pop();
+            //add it to list
+            preOrder.add(root.value);
+            //check if left and right elements are present
+            if (root.right != null) st.push(root.right);
+            if (root.left != null) st.push(root.left);
+        }
+        return preOrder;
     }
 }

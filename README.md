@@ -5453,7 +5453,8 @@ Or we can **start from the leaf** element and then move to parent and its **othe
 
 ![depth-first-search.gif](image/depth-first-search.gif)
 
-That's called **Depth First Search**.
+That's called **Depth First Search**, and we can have 3 types, preOrder, PostOrder or InOrder. But we will understand 
+what that means later.
 
 ## Breadth First Search
 
@@ -5525,8 +5526,8 @@ This exactly **matches our tree**.
 
 ### Code
 
-Let's implement the Breadth First Search method on a copy of the `BinarySearchTree` class that we created before, but using the 
-Data Structures provided by Java.
+Let's implement the Breadth First Search method on a copy of the `BinarySearchTree` class that we created before ([BinarySearchTree.java](src/com/hermscoder/algorithm/treetraversal/BinarySearchTree.java)) 
+but using the Data Structures provided by Java.
 
 We won't be using the _Queue class_ that we created before. Let's be more familiarized with the Data Structures
 provided by Java.
@@ -5586,3 +5587,235 @@ The output of the class:
 [47, 21, 76, 18, 27, 52, 82]
 ```
 
+## Depth First Search
+
+### PreOrder
+We start add the top, and then we keep moving to the left. When reaching a leaf, we go back to the parent and we go to the right child.
+
+
+![dsf-preorder-1.png](image/dsf-preorder-1.gif)
+
+And now that we've looked at everything on the left of the node 47, we'll go right (node 76) and to the left child first (node 52),
+just like we did on the left side.
+
+![dsf-preorder-2.png](image/dsf-preorder-2.gif)
+
+#### Code
+
+We are going to implement this method on that same 
+[BinarySearchTree.java](src/com/hermscoder/algorithm/treetraversal/BinarySearchTree.java) class.
+
+I managed to find many ways to implement the Pre Order Depth First Search, those are:
+
+Using recursion:
+
+```java
+public ArrayList<Integer> dfsPreOrderRecursive(){
+    return rDFSPreOrder(new ArrayList<>(), root);
+}
+
+private ArrayList<Integer> rDFSPreOrder(ArrayList<Integer> array, Node currentNode){
+    array.add(currentNode.value);
+
+    if(currentNode.left != null)  {
+        rDFSPreOrder(array, currentNode.left);
+    }
+    if(currentNode.right != null)  {
+        rDFSPreOrder(array, currentNode.right);
+    }
+    return array;
+}
+```
+
+No recursion but using Stack to push and pop items in the result array:
+
+```java
+    public List<Integer> dfsPreOrderNonRecursive(Node root) {
+        //initialize array list
+        List<Integer> preOrder = new ArrayList<>();
+
+        //if tree is empty then we return empty list
+        if(root == null) return preOrder;
+
+        //initialize stack
+        Stack<Node> st = new Stack<Node>();
+
+        //push root element to stack
+        st.push(root);
+
+        //loop runs till stack in not empty
+        while(!st.isEmpty()){
+            //pop the top element in stack
+            root = st.pop();
+            //add it to list
+            preOrder.add(root.value);
+            //check if left and right elements are present
+            if(root.right != null) st.push(root.right);
+            if(root.left != null) st.push(root.left);
+        }
+        return preOrder;
+    }
+```
+This solution if from  [Educative.io](https://www.educative.io/answers/how-to-solve-a-binary-tree-preorder-traversal-iteratively)
+
+And a solution using an inner class object instantiation:
+
+```java
+public ArrayList<Integer> dfsPreOrderObjectInstantiation() {
+    ArrayList<Integer> results = new ArrayList<>();
+
+    class Traverse {
+        Traverse(Node currentNode) {
+            results.add(currentNode.value);
+            if (currentNode.left != null) {
+                new Traverse(currentNode.left);
+            }
+            if (currentNode.right != null) {
+                new Traverse(currentNode.right);
+            }
+        }
+    }
+    new Traverse(root);
+    return results;
+}
+```
+
+All the methods above if executed on this Main class:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+        bst.insert(47);
+        bst.insert(21);
+        bst.insert(76);
+        bst.insert(18);
+        bst.insert(27);
+        bst.insert(52);
+        bst.insert(82);
+
+        System.out.println(bst.dfsPreOrderRecursive());
+        System.out.println(bst.dfsPreOrderNonRecursive(bst.getRoot()));
+        System.out.println(bst.dfsPreOrderObjectInstantiation());
+
+    }
+}
+```
+
+Will output this:
+
+```text
+[47, 21, 18, 27, 76, 52, 82]
+[47, 21, 18, 27, 76, 52, 82]
+[47, 21, 18, 27, 76, 52, 82]
+```
+
+That is basically the preOrder of our tree.
+
+### PostOrder
+Just like the other tree traversal algorithms, we are going to start from the top.
+
+But for PostOrder we are going just to 
+**VISIT** the node, but **we won't add its value to the return yet**.
+
+We will go to the left, until we reach a node that left is null, and then we look right to see if that's null as well,
+
+![dsf-postorder-1.png](image/dsf-postorder-1.gif)
+
+and finally we write its value.
+
+Now we come up to the parent (node 21), and we go to the right child (node 27).
+Then we look left and right to see if there are no children, and then we write its value.
+
+![dsf-postorder-2.png](image/dsf-postorder-2.gif)
+
+Then we come back to parent (node 21), and as we visited left and right we can print its value.
+
+![dsf-postorder-3.png](image/dsf-postorder-3.png)
+
+And now we can go back to parent, and check the right side of the parent (node 76), and it's left child first.
+
+![dsf-postorder-4.gif](image/dsf-postorder-4.gif)
+
+And now we move to the parent (node 76) and to its right child to write its value. And then back to the parent to write 
+its value, and then back to the top and finally we write the top value.
+
+![dsf-postorder-5.gif](image/dsf-postorder-5.gif)
+
+We can see a similarity between all the steps, suggesting a recursive solution.
+
+#### Code
+
+
+We can use a similar solution just like the preOrder method.
+
+Using recursion:
+```java
+public ArrayList<Integer> dfsPostOrderRecursive() {
+    return rDfsPostOrder(new ArrayList<>(), root);
+}
+
+private ArrayList<Integer> rDfsPostOrder(ArrayList<Integer> results, Node currentNode) {
+    if(currentNode.left != null) {
+        rDfsPostOrder(results, currentNode.left);
+    }
+    if(currentNode.right != null) {
+        rDfsPostOrder(results, currentNode.right);
+    }
+
+    results.add(currentNode.value);
+    return results;
+}
+```
+
+Or we can use the `Traversal` inner class instantiation.
+
+```java
+public ArrayList<Integer> dfsPostOrderObjectInstantiation() {
+    ArrayList<Integer> results = new ArrayList<>();
+
+    class Traversal {
+        Traversal(Node currentNode) {
+            if(currentNode.left != null) {
+                new Traversal(currentNode.left);
+            }
+            if(currentNode.right != null) {
+                new Traversal(currentNode.right);
+            }
+            results.add(currentNode.value);
+        }
+    }
+    new Traversal(root);
+    return results;
+}
+```
+For the following Main class:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+        bst.insert(47);
+        bst.insert(21);
+        bst.insert(76);
+        bst.insert(18);
+        bst.insert(27);
+        bst.insert(52);
+        bst.insert(82);
+
+        System.out.println(bst.dfsPostOrderRecursive());
+        System.out.println(bst.dfsPostOrderObjectInstantiation());
+
+    }
+}
+```
+
+That's the output:
+
+```text
+[18, 27, 21, 52, 82, 76, 47]
+[18, 27, 21, 52, 82, 76, 47]
+```
+And that's the PostOrder of our tree.
+
+### InOrder
