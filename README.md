@@ -3588,6 +3588,119 @@ public boolean removeVertex(String vertex) {
     return true;
 }
 ```
+# Heap
+A heap looks like a Binary Search Tree, but the numbers are laid out differently.
+
+Each node has a value that is greater than all of its descendants, and because of that, the **maximum value** is always 
+going to be **at the top**.
+
+![heap.png](image/heap.png)
+
+Key characteristics:
+- Heap tree will **always be complete**.
+- We can have **duplicates**.
+
+This is a particular type of heap called **MAX HEAP**, where the **maximum value is at the top**.
+
+![img.png](image/heap-maxheap.png)
+
+We can also have **MIN HEAP**, where the **minimum value is at the top**.
+
+![img_1.png](image/heap-minheap.png)
+
+Other than the **maximum value being at the top** there is **no particular order to the other nodes**.
+
+![img.png](image/heap-noorder.png)
+
+The biggest difference between heap and bst, is how we implement it. 
+
+We are going to implement Heap with an ArrayList and no Node class. 
+
+Basically we store integers in the array.
+
+So this heap:
+![heap-maxheap.png](image/heap-maxheap.png)
+
+Could be represented as an array list like this:
+
+|  99  |  72  |  61   |  58  |  55  | 27  |  18 |
+| ---  | ---  | ---   | ---  | ---  | --- | --- |
+|  0   |  1   |   2   |  3   |   4  |  5  |  6  |
+
+Or another common way of doing it, is leaving the first index open and move everything to the right.
+
+|  ✖   |  99  |  72  |  61   |  58  |  55  | 27  |  18  |
+| ---  | ---  | ---  | ---   | ---  | ---  | --- | ---  |
+|  0   |  1   |   2  |   3   |   4  |   5  |  6  |  7   |
+
+We can think of this tree like this:
+
+![heap-tree-like-array.png](image/heap-tree-like-array.png)
+
+That's why the tree need to the **complete tree**. Otherwise if we had something like:
+
+![heap-tree-like-array-incomplete.png](image/heap-tree-like-array-incomplete.png)
+
+The array would look like:
+
+|  ✖   |  99  |  72  |  61   |  58  |  ✖  | 27  |  18 |
+| ---  | ---  | ---  | ---   | ---  | ---  | --- | --- |
+|  0   |  1   |   2  |   3   |   4  |   5  |  6  |  7  |
+
+It has to be a **contiguous set of numbers**. With no gaps.
+
+## How do we find a specific children?
+
+For that we use a bit of math. Again, keep in mind that it will be always a complete tree.
+
+Let's say we want to find the children of the item 72, how do we do it?
+
+First, let's describe all the array indexes of those elements.
+
+![heap-tree-like-array-1.png](image/heap-tree-like-array-1.png)
+
+We can notice that we can write a formula to find a specific index.
+
+![heap-tree-like-array-2.png](image/heap-tree-like-array-2.png)
+
+This means that to find a specific child, you can use:
+
+**leftChild** = 2 * parentIndex
+
+**rightChild** = 2 * parentIndex + 1
+
+We know that **72 index is 2**, so we can just apply the formula.
+
+**leftChild** = 2 * 2 = **4**
+
+**rightChild** = 2 * 2 + 1 = **5**
+
+|  ✖   |  99  |  72  |  61   |  `58`  |  `55`  | 27  |  18  |
+| ---  | ---  | ---  | ---   | ---  | ---  | --- | ---  |
+|  0   |  1   |   2  |   3   |   **4**  |   **5**  |  6  |  7   |
+
+## How do we find a parent a node?
+If there is a formula to calculate the children indexes, then the 
+formula to find the parent index should be the opposite formula.
+
+So if we are in those children and we want to know the parent index.
+
+![heap-tree-like-array-3.png](image/heap-tree-like-array-3.png)
+
+**from leftChild (27)** = childIndex/2 = 6/2 = **3**
+
+**from rightChild (18)** = childIndex/2 = 7/2 _(int)_ =  **3**
+
+We are going to use **integer division**, so we don't care about 
+everything to the right of the decimal place.
+
+|  ✖   |  99  |  72  |  `61`   |  58  |  55  | 27  |  18  |
+| ---  | ---  | ---  | ---   | ---  | ---  | --- | ---  |
+|  0   |  1   |   2  |   **3**   |   4  |   5  |  6  |  7   |
+
+So the parent is the number 61.
+
+
 
 # Recursion
 
