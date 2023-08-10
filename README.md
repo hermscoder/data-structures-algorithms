@@ -3649,9 +3649,12 @@ The array would look like:
 
 It has to be a **contiguous set of numbers**. With no gaps.
 
-## How do we find a specific children?
+## Index calculation
+For finding a specific element child/parent, we will use a bit of math. 
 
-For that we use a bit of math. Again, keep in mind that it will be always a complete tree.
+Again, keep in mind that a heap will be always a complete tree.
+
+### How do we find a specific children?
 
 Let's say we want to find the children of the item 72, how do we do it?
 
@@ -3679,7 +3682,7 @@ We know that **72 index is 2**, so we can just apply the formula.
 | ---  | ---  | ---  | ---   | ---  | ---  | --- | ---  |
 |  0   |  1   |   2  |   3   |   **4**  |   **5**  |  6  |  7   |
 
-## How do we find a parent a node?
+### How do we find a parent a node?
 If there is a formula to calculate the children indexes, then the 
 formula to find the parent index should be the opposite formula.
 
@@ -3687,9 +3690,9 @@ So if we are in those children and we want to know the parent index.
 
 ![heap-tree-like-array-3.png](image/heap-tree-like-array-3.png)
 
-**from leftChild (27)** = childIndex/2 = 6/2 = **3**
+**from leftChild (27):** parentIndex = childIndex/2 = 6/2 = **3**
 
-**from rightChild (18)** = childIndex/2 = 7/2 _(int)_ =  **3**
+**from rightChild (18):** parentIndex = childIndex/2 = 7/2 _(int)_ =  **3**
 
 We are going to use **integer division**, so we don't care about 
 everything to the right of the decimal place.
@@ -3699,6 +3702,140 @@ everything to the right of the decimal place.
 |  0   |  1   |   2  |   **3**   |   4  |   5  |  6  |  7   |
 
 So the parent is the number 61.
+
+## Insert Introduction
+
+Imagine we have to insert the value 100 in the following heap:
+
+![heap-insert-1.png](image/heap-insert-1.png)
+
+You would think we might insert it at the top, but it doesn't 
+matter what the value is, we will always **insert it in the right 
+place to keep the heap a complete tree**. 
+
+As we said before, heap will always be a complete tree.
+
+![heap-insert-2.png](image/heap-insert-2.png)
+
+After inserting it we will **compare it to its parent**, if it's 
+**greater** we will **swap these two values**. And **repeat until we 
+find a parent with greater value or if we reach the top**.
+
+![heap-insert-3.png](image/heap-insert-3.png)
+
+On this case, we stopped comparing because we **reached the top** of the heap.
+
+Let's try to add the value 75 now:
+
+![heap-insert-4.png](heap-insert-4.png)
+
+Here we stopped because we found a **parent** (100) that was **greater** than 75.
+
+How would process looks like in an array manner. Have in mind that heap is implemented using an array.
+
+Let's see the first case, of adding 100 to the following heap:
+![heap-insert-5.png](heap-insert-5.png)
+
+That can be represented by this array:
+![heap-insert-6.png](heap-insert-6.png)
+
+First we need to find the parentIndex using the formula we talked about:
+
+![heap-insert-7.png](heap-insert-7.png)
+
+After **finding the parentIndex** we compare parent(72) to new item(100), and we **swap those as parent is smaller** than 100.
+
+We **repeat this process** one more time, and then we reach the **top of the heap**:
+
+![heap-insert-8.png](heap-insert-8.png)
+
+Now let's see the process for **adding the number 75**.
+Would look like this in the tree.
+
+![img_4.png](heap-insert-9.png)
+
+All the steps on an array, would look like this:
+
+Calculating the parentIndex and comparing the value we noticed that the parent is smaller, so we need swap.
+
+![heap-insert-10.png](heap-insert-10.png)
+
+And then we do it again, but we don't swap as the parent is greater than 75.
+![heap-insert-11.png](heap-insert-11.png)
+
+So we end up with the array like this:
+
+|  ✖   |  100  |  99  |  75   |  58  |  72  | 61  |
+| ---  | ---  | ---  | ---   | ---  | ---  | --- |
+|  0   |  1   |   2  |   3   |   4  |   5  |  6  |
+
+So far we have been leaving the index of 0 free. But **when we implement the insert method we are going to use the index 0**.
+
+## Implementation
+
+### Constructor
+```java
+public class Heap {
+    private List<Integer> heap;
+
+    public Heap() {
+        this.heap = new ArrayList<>();
+    }
+
+    public List<Integer> getHeap(){
+      return new ArrayList<>(heap);
+    }
+}
+```
+
+### Helper methods
+We need to implement the methods having the formulas for finding child and parent indexes of a given element.
+
+```java
+private int leftChild(int index) {
+    // we have to do (index + 1) due to the fact that we 
+    // are going to use the 0 index position in  the array.
+    return 2 * index + 1;
+}
+    // we have to do (index + 2) due to the fact that we 
+    // are going to use the 0 index position in  the array.
+private int rightChild(int index) {
+    return 2 * index + 2;
+}
+
+private int parent(int index) {
+    // we have to do (index - 1) due to the fact that we 
+    // are going to use the 0 index position in  the array.
+    return (index - 1) / 2;
+}
+
+private void swap(int index1, int index2) {
+    int temp = heap.get(index1);
+    heap.set(index1, heap.get(index2));
+    heap.set(index2, temp);
+}
+```
+
+### Insert
+
+```java
+public void insert(int num){
+    heap.add(num);
+
+    int currentIndex = heap.size() - 1;
+    if(heap.size() >= 2) {
+        // we stop the loop if we reach the top
+        while(currentIndex > 0) {
+            int parentIndex = parent(currentIndex);
+            // or if we find a parent with a greater value
+            if(heap.get(currentIndex) <= heap.get(parentIndex)) break;
+            swap(parentIndex, currentIndex);
+            currentIndex = parentIndex;
+        }
+    }
+}
+```
+
 
 
 
