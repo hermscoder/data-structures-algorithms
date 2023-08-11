@@ -77,6 +77,7 @@ public class MaximumElementInStream {
         return results;
     }
 
+
     public static void main(String[] args) {
         // Test case 1
         int[] nums1 = {1, 5, 2, 9, 3, 6, 8};

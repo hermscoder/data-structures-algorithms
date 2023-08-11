@@ -1,3 +1,202 @@
+- [Data Structures and Algorithms](#data-structures-and-algorithms)
+  * [What is Big O?](#what-is-big-o-)
+- [Big O](#big-o)
+  * [The Worst Case](#the-worst-case)
+  * [O(n)](#o-n-)
+    + [Drop Constants](#drop-constants)
+  * [O(n^2)](#o-n-2-)
+  * [Drop Non-dominants](#drop-non-dominants)
+  * [O(1)](#o-1-)
+  * [O(log n)](#o-log-n-)
+  * [Different Terms for Inputs](#different-terms-for-inputs)
+  * [Array Lists](#array-lists)
+  * [Wrap up Big O](#wrap-up-big-o)
+  * [Plus](#plus)
+- [Linked Lists](#linked-lists)
+  * [Linked List: Big O](#linked-list--big-o)
+    + [Add to the end:](#add-to-the-end-)
+    + [Remove last item:](#remove-last-item-)
+    + [Add to the beginning:](#add-to-the-beginning-)
+    + [Remove first item:](#remove-first-item-)
+    + [Add item at specific index:](#add-item-at-specific-index-)
+    + [Remove item at specific index:](#remove-item-at-specific-index-)
+    + [Find by value:](#find-by-value-)
+  * [Under the Hood](#under-the-hood)
+  * [Constructor](#constructor)
+  * [How to implement reverse() method for a LinkedList](#how-to-implement-reverse---method-for-a-linkedlist)
+  * [How to implement "Find Kth from end" method for a LinkedList](#how-to-implement--find-kth-from-end--method-for-a-linkedlist)
+  * [How to implement "Reverse Between indexes" method for a LinkedList](#how-to-implement--reverse-between-indexes--method-for-a-linkedlist)
+- [Doubly Linked List](#doubly-linked-list)
+  * [Constructor](#constructor-1)
+  * [Append method](#append-method)
+  * [Remove Last](#remove-last)
+  * [Prepend](#prepend)
+  * [Remove First](#remove-first)
+  * [Get by index](#get-by-index)
+  * [Set - changing the value of a particular node](#set---changing-the-value-of-a-particular-node)
+  * [Insert node on index](#insert-node-on-index)
+  * [Remove by index](#remove-by-index)
+  * [DLL: Swap First and Last](#dll--swap-first-and-last)
+  * [Reverse](#reverse)
+  * [Palindrome Checker](#palindrome-checker)
+  * [Swap Nodes in Pairs](#swap-nodes-in-pairs)
+- [Stacks](#stacks)
+  * [Use case](#use-case)
+  * [How to implement](#how-to-implement)
+    + [Using Array List](#using-array-list)
+    + [Using Singly Linked List](#using-singly-linked-list)
+      - [From the end of the linked list](#from-the-end-of-the-linked-list)
+        * [Remove:](#remove-)
+        * [Add:](#add-)
+      - [From the beginning of the linked list](#from-the-beginning-of-the-linked-list)
+        * [Remove:](#remove--1)
+        * [Add:](#add--1)
+      - [Conclusion](#conclusion)
+  * [Constructor](#constructor-2)
+  * [Push](#push)
+  * [Pop](#pop)
+- [Queues](#queues)
+  * [How to implement](#how-to-implement-1)
+    + [Using Array List](#using-array-list-1)
+    + [Using Singly Linked List](#using-singly-linked-list-1)
+      - [From the end of the linked list](#from-the-end-of-the-linked-list-1)
+      - [From the beginning of the linked list](#from-the-beginning-of-the-linked-list-1)
+      - [Conclusion](#conclusion-1)
+  * [Constructor](#constructor-3)
+  * [enqueue()](#enqueue--)
+  * [dequeue()](#dequeue--)
+- [Trees](#trees)
+  + [Full tree](#full-tree)
+  + [Perfect tree](#perfect-tree)
+  + [Complete](#complete)
+  + [Structure](#structure)
+- [Binary Search Tree](#binary-search-tree)
+  + [Things to point out about BST](#things-to-point-out-about-bst)
+  * [Binary Search Tree: Big O](#binary-search-tree--big-o)
+    + [Divide and Conquer](#divide-and-conquer)
+    + [Worst Case Scenario](#worst-case-scenario)
+    + [Binary Search Tree VS Linked List](#binary-search-tree-vs-linked-list)
+      - [lookup()](#lookup--)
+    + [remove()](#remove--)
+    + [insert()](#insert--)
+  * [Constructor](#constructor-4)
+  * [Insert](#insert)
+    + [Steps](#steps)
+    + [Implementing](#implementing)
+  * [Contains](#contains)
+    + [Steps](#steps-1)
+    + [Implementing](#implementing-1)
+- [Hash Tables](#hash-tables)
+  + [Some important characteristics of hash:](#some-important-characteristics-of-hash-)
+  + [Adding items to Hash Table](#adding-items-to-hash-table)
+  + [Getting item from Hash Table](#getting-item-from-hash-table)
+  * [Collisions](#collisions)
+  * [Constructor](#constructor-5)
+  * [Hash](#hash)
+  * [Set](#set)
+  * [Get](#get)
+  * [Keys](#keys)
+  * [Hash Table: Big O](#hash-table--big-o)
+    + [`set("washers", 1000)`:](#-set--washers---1000---)
+    + [`get("screws", 1000)`:](#-get--screws---1000---)
+  * [Interview question](#interview-question)
+- [Graphs](#graphs)
+  * [Basic concepts](#basic-concepts)
+  * [Edges](#edges)
+    + [Weighted and Non-weighted](#weighted-and-non-weighted)
+    + [Directional or bidirectional](#directional-or-bidirectional)
+  * [Trees are graphs](#trees-are-graphs)
+    + [Linked Lists are Trees](#linked-lists-are-trees)
+  * [Representing a graph](#representing-a-graph)
+    + [Adjacency Matrix](#adjacency-matrix)
+      - [Weighted Edges](#weighted-edges)
+    + [Adjacency List](#adjacency-list)
+  * [Graph: Big O](#graph--big-o)
+    + [Space Complexity](#space-complexity)
+    + [Adding an Vertex](#adding-an-vertex)
+      - [Adjacency List](#adjacency-list-1)
+      - [Adjacency Matrix](#adjacency-matrix-1)
+      - [Conclusion](#conclusion-2)
+    + [Adding an Edge](#adding-an-edge)
+      - [Adjacency List](#adjacency-list-2)
+      - [Adjacency Matrix](#adjacency-matrix-2)
+      - [Conclusion](#conclusion-3)
+    + [Remove an Edge](#remove-an-edge)
+      - [Adjacency List](#adjacency-list-3)
+      - [Adjacency Matrix](#adjacency-matrix-3)
+      - [Conclusion](#conclusion-4)
+    + [Remove a Vertex](#remove-a-vertex)
+      - [Adjacency List](#adjacency-list-4)
+      - [Adjacency Matrix](#adjacency-matrix-4)
+      - [Conclusion](#conclusion-5)
+    + [Which one is better?](#which-one-is-better-)
+  * [Constructor](#constructor-6)
+  * [Add Vertex](#add-vertex)
+  * [Add Edge](#add-edge)
+  * [Remove Edge](#remove-edge)
+  * [Remove Vertex](#remove-vertex)
+- [Heap](#heap)
+  * [Index calculation](#index-calculation)
+    + [How do we find a specific children?](#how-do-we-find-a-specific-children-)
+    + [How do we find a parent a node?](#how-do-we-find-a-parent-a-node-)
+  * [Insert Introduction](#insert-introduction)
+  * [Implementation](#implementation)
+    + [Constructor](#constructor-7)
+    + [Helper methods](#helper-methods)
+    + [Insert](#insert-1)
+    + [Remove](#remove)
+      - [sinkDown](#sinkdown)
+      - [remove](#remove)
+  * [Priority Queue](#priority-queue)
+- [Recursion](#recursion)
+  * [Introduction](#introduction)
+  * [Call Stack](#call-stack)
+  * [Factorial](#factorial)
+- [Recursive Binary Search Tree](#recursive-binary-search-tree)
+  * [What we already have](#what-we-already-have)
+  * [Contains](#contains-1)
+  * [Insert](#insert-2)
+  * [Delete](#delete)
+    + [Introduction](#introduction-1)
+    + [Implementing](#implementing-2)
+      - [Leaf node](#leaf-node)
+      - [Single child node](#single-child-node)
+      - [Each side child](#each-side-child)
+- [Algorithms](#algorithms)
+  * [Bubble Sort](#bubble-sort)
+    + [Code](#code)
+  * [Selection Sort](#selection-sort)
+    + [Code](#code-1)
+  * [Insertion Sort](#insertion-sort)
+    + [Code](#code-2)
+    + [Big O](#big-o-1)
+  * [Merge Sort](#merge-sort)
+    + [Merge method](#merge-method)
+      - [Implementing](#implementing-3)
+    + [Sorting Implementation](#sorting-implementation)
+    + [Big O](#big-o-2)
+  * [Quick Sort](#quick-sort)
+    + [Pivot](#pivot)
+      - [Introduction](#introduction-2)
+      - [Code](#code-3)
+    + [Sorting](#sorting)
+      - [Code](#code-4)
+    + [Big O](#big-o-3)
+- [Tree Traversal](#tree-traversal)
+  * [Breadth First Search](#breadth-first-search)
+    + [Code](#code-5)
+  * [Depth First Search](#depth-first-search)
+    + [PreOrder](#preorder)
+      - [Code](#code-6)
+    + [PostOrder](#postorder)
+      - [Code](#code-7)
+    + [InOrder](#inorder)
+      - [Code](#code-8)
+    + [Conclusion](#conclusion-6)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
 # Data Structures and Algorithms
 
 When two codes accomplish the same thing, how can you compare those? Big O is a way to compare code1 and code2
@@ -469,7 +668,7 @@ memory**. And that's why on those data structures **we can have indexes**.
 
 For example, we have a linked list
 
-### `add something to the end`:
+### Add to the end:
 
 |  11   |  →  |  3  |  →  |  23 |  →  |  7  |
 | ---   | --- | --- | --- | --- | --- | --- |
@@ -494,7 +693,9 @@ items, or it has 1000 items in it.
 
 For removing the last item it can appear to be the same complexity, but it's not
 
-### `remove the last item (4)`:
+### Remove last item:
+
+last item: 4
 
 |  11   |  →  |  3  |  →  |  23 |  →  |  7  |  →  |  4  |
 | ---   | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -522,7 +723,7 @@ Because we had to touch every node and iterate through the list, this is _**O(n)
 | ---   | --- | --- | --- | --- | --- | --- |
 | head  |     |     |     |     |     | tail|
 
-### `add item to the begining`:
+### Add to the beginning:
 
 We are going to move the head to the new node
 
@@ -540,7 +741,7 @@ So it doesn't matter how much items we have in the linked list. We will always d
 
 Meaning that is _**O(1)**_.
 
-### `remove first item`:
+### Remove first item:
 
 We are going to move the head to the _head.next_ node
 
@@ -564,9 +765,9 @@ So it doesn't matter how much items we have in the linked list. We will always d
 
 Meaning that is _**O(1)**_.
 
-### `add item at index 3`:
+### Add item at specific index:
 
-This means it will be after the **23** node
+Adding an item at index 3 means it will be after the **23** node
 
 |  11   |  →  |  3  |  →  |  23 |  →  |  7  |
 | ---   | --- | --- | --- | --- | --- | --- |
@@ -597,7 +798,9 @@ And the node that we are currently (**23 node**) points to the new node (_node.n
 
 Because we had to iterate through the list to find the element on index 3, this is **_O(n)_**.
 
-### `remove item at index 3`:
+### Remove item at specific index:
+
+Remove item at specific index 3
 
 |  11   |  →  |  3  |  →  |  23 |  →  |  4  |  →  |  7  |
 | ---   | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -616,7 +819,9 @@ And we point the **4** node to _NULL_, so it removes the node from the list.
 
 Because we had to iterate through the list to find the element on index 3, this is **_O(n)_**.
 
-### `look for something by value 23`:
+### Find by value:
+
+What if we want to look for an item that has value 23?
 
 |  11   |  →  |  3  |  →  |  23 |  →  |  7  |
 | ---   | --- | --- | --- | --- | --- | --- |
