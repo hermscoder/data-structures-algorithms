@@ -1,4 +1,16 @@
-- [Data Structures and Algorithms](#data-structures-and-algorithms)
+# Data Structures and Algorithms
+
+After studying about Data Structured and Algorithms, I put together some annotations that I
+believe are useful if you need to revisit some topics or to understand a topic for the first time.
+
+
+Courses I can recommend:
+- [Java Data Structures & Algorithms](https://itmagination.udemy.com/course/data-structures-and-algorithms-java/)
+- [The Last Algorithms Course You'll Need](https://frontendmasters.com/courses/algorithms/)
+
+
+## Table of Content 
+- [Comparing Code](#comparing-code)
   * [What is Big O?](#what-is-big-o-)
 - [Big O](#big-o)
   * [The Worst Case](#the-worst-case)
@@ -193,11 +205,12 @@
     + [InOrder](#inorder)
       - [Code](#code-8)
     + [Conclusion](#conclusion-6)
+- [Thank you](#thank-you)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
-# Data Structures and Algorithms
+# Comparing Code
 
 When two codes accomplish the same thing, how can you compare those? Big O is a way to compare code1 and code2
 mathematically about how efficiently they run.
@@ -6483,3 +6496,8 @@ In the code this basically translates to which moment we are writing or visiting
 - preOrder writes before visiting left and right nodes.
 - postOrder writes after visiting left and right nodes.
 - inOrder writes after visiting left node and before visiting the right node.
+
+
+## Thank you!
+
+Thank you for being here. If this repo managed to help you some way, give it a star or let me know if I must change something!
