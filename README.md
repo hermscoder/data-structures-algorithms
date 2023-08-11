@@ -3727,41 +3727,41 @@ On this case, we stopped comparing because we **reached the top** of the heap.
 
 Let's try to add the value 75 now:
 
-![heap-insert-4.png](heap-insert-4.png)
+![heap-insert-4.png](image/heap-insert-4.png)
 
 Here we stopped because we found a **parent** (100) that was **greater** than 75.
 
 How would process looks like in an array manner. Have in mind that heap is implemented using an array.
 
 Let's see the first case, of adding 100 to the following heap:
-![heap-insert-5.png](heap-insert-5.png)
+![heap-insert-5.png](image/heap-insert-5.png)
 
 That can be represented by this array:
-![heap-insert-6.png](heap-insert-6.png)
+![heap-insert-6.png](image/heap-insert-6.png)
 
 First we need to find the parentIndex using the formula we talked about:
 
-![heap-insert-7.png](heap-insert-7.png)
+![heap-insert-7.png](image/heap-insert-7.png)
 
 After **finding the parentIndex** we compare parent(72) to new item(100), and we **swap those as parent is smaller** than 100.
 
 We **repeat this process** one more time, and then we reach the **top of the heap**:
 
-![heap-insert-8.png](heap-insert-8.png)
+![heap-insert-8.png](image/heap-insert-8.png)
 
 Now let's see the process for **adding the number 75**.
 Would look like this in the tree.
 
-![img_4.png](heap-insert-9.png)
+![img_4.png](image/heap-insert-9.png)
 
 All the steps on an array, would look like this:
 
 Calculating the parentIndex and comparing the value we noticed that the parent is smaller, so we need swap.
 
-![heap-insert-10.png](heap-insert-10.png)
+![heap-insert-10.png](image/heap-insert-10.png)
 
 And then we do it again, but we don't swap as the parent is greater than 75.
-![heap-insert-11.png](heap-insert-11.png)
+![heap-insert-11.png](image/heap-insert-11.png)
 
 So we end up with the array like this:
 
@@ -3836,8 +3836,133 @@ public void insert(int num){
 }
 ```
 
+### Remove
+For the Heap we always remove the top item. It doesn't matter if it's a maxHeap or minHeap.
+
+The first step is removing the top item:
+![img.png](image/heap-remove.png)
+
+Now we have to keep the tree complete, and the only node we can move to make the tree complete is the bottom node to the top.
+
+![img.png](image/heap-remove-1.png)
+
+After having the complete tree. We have to make it a valid heap. So we have to sink the 65 node down,
+by comparing to see which child has the highest value, and then we swap positions with it.
+
+![img.png](image/heap-remove-2.png)
+
+And then we do it again, but as 65 is greater than 60, we will stop there.
+
+So for sinking down the node we are going to need a helper function.
+
+#### sinkDown 
+
+```java
+private void sinkDown(int index) {
+        int maxIndex = index;
+        while(maxIndex < heap.size()) {
+            int leftChildIndex = leftChild(maxIndex);
+            int rightChildIndex = rightChild(maxIndex);
+
+            // if the calculated index exists and the value in there is greater, we save it's index
+            if(leftChildIndex < heap.size() && heap.get(leftChildIndex) > heap.get(maxIndex)) {
+                maxIndex = leftChildIndex;
+            }
+
+            // if the calculated index exists and the value in there is greater than our current
+            // maxIndex, we save it's index
+            if (rightChildIndex < heap.size() && heap.get(rightChildIndex) > heap.get(maxIndex)) {
+                maxIndex = rightChildIndex;
+            }
+
+            // if we changed maxIndex, then we swap. If not it means we couldn't find a
+            // child with greater value, so we break the loop.
+            if(maxIndex != index) {
+                swap(index, maxIndex);
+                index = maxIndex;
+            } else {
+                return;
+            }
+        }
+    }
+```
 
 
+#### remove
+```java
+public Integer remove() {
+    if(heap.size() == 0) return null;
+    if(heap.size() == 1) {
+        return heap.remove(0);
+    }
+
+    int maxValue = heap.get(0);
+    // here we set the top as the removed last item.
+    heap.set(0, heap.get(heap.size() - 1));
+    
+    // we sink the top down
+    sinkDown(0);
+
+    return maxValue;
+}
+```
+
+## Priority Queue
+Priority queues are usually implemented using heap. Ofter you will hear people using terms like priority queue and heap 
+as if they were the same thing.
+
+In a Priority Queue we want to return the **highest priority item in the queue**. 
+
+We can already see why heap it's almost always used to implement a priority queue.
+
+It all comes down to _Big O_. 
+
+Technically you could implement the priority queue with a linked list, 
+but returning the maximum value requires that we go through the entire 
+list, and that's _**O(n)**_.
+
+You could also implement using a simple array list, with numbers in a 
+random order. We would have to go through the entire list, and that's _**O(n)**_ as well.
+
+Same would happen with the hash map, we would have to iterate through all the values. Making it _**O(n)**_ once again.
+
+If we use a Binary Search Tree we can always go to the node at far right. That would be _**O(log n)**_. But that's only
+the case if the tree is balanced. If not it would be pratically a single linked list, making it _**O(n)**_.
+
+With a Heap the tree is always balanced. So we would have the unbalanced tree issue.
+
+To understand the Big O of the heap we need to understand how to calculate the height of the heap.
+
+`n = number of elements`
+
+`height = log(n)`
+
+![img.png](image/heap-big-o-1.png)
+
+So for this tree the height would be:
+`height = log(8) = 3`
+
+Knowing the height is log(n), imagine we remove an item from the heap.
+
+![img_1.png](image/heap-big-o-2.png)
+
+The item we put on top (50) was so small that it had to be sinkDown the entire height of the tree (log (n)).
+
+Same would happen if we inserted the item 100.
+
+![img_2.png](image/heap-big-o-3.png)
+
+We would have to bubble it up the entire height of the tree (log (n)).
+
+So it doesn't matter if we are doing **insert or remove**, it will be **always** _**O(log n)**_.
+
+If we had a heap with a 1.000.000 items:
+
+`n = 1000000`
+
+`height = log(n) = 20`
+
+So it's a **huge difference in efficiency**. That's why you will almost see a heap being used with priority queues.  
 
 # Recursion
 
