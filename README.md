@@ -263,7 +263,10 @@ When calling this method we get the output:
 This code is O(n), because we had a number _**n**_, that was 10, and we did **10 operations** on our for loop.
 
 ![alt text](image/o-of-n.jpeg)
-X = n Y = Number of operations
+
+X = Collection Size = n
+
+Y = Execution time
 
 ### Drop Constants
 
